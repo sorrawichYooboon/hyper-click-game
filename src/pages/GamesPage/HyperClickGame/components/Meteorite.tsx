@@ -1,4 +1,4 @@
-import { useFrame } from "@react-three/fiber";
+import { ThreeEvent, useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { Text } from "@react-three/drei";
@@ -68,8 +68,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({ onClick }: MeteoriteProps) => {
       ref={ref}
       position={meshPosition}
       scale={scale}
-      onPointerOver={(e) => setOnHover(true)}
-      onPointerOut={(e) => setOnHover(false)}
+      onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
+      onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
     >
       <boxGeometry args={[0.5, 0.5, 0.5]} />
       <meshStandardMaterial color={meshColor} />
