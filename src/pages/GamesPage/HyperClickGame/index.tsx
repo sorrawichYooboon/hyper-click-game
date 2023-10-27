@@ -33,8 +33,6 @@ const HyperClickGame: React.FC = () => {
       <Canvas camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 0, 5] }}>
         <Stage environment="city">
           <Stars />
-          {/* <ambientLight intensity={0.5} /> */}
-          {/* <pointLight position={[10, 10, 10]} /> */}
           <OrbitControls
             target={[0, 0, 0]}
             makeDefault
