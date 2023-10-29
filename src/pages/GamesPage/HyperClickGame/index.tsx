@@ -40,13 +40,16 @@ const HyperClickGame: React.FC = () => {
             enablePan={false}
           />
         </Stage>
+        {Array.from({ length: 8 }, (_, index) => (
+          <Meteorite key={index} onClick={handleMeteoriteClick} />
+        ))}
+        {/* <Meteorite onClick={handleMeteoriteClick} />
         <Meteorite onClick={handleMeteoriteClick} />
         <Meteorite onClick={handleMeteoriteClick} />
         <Meteorite onClick={handleMeteoriteClick} />
         <Meteorite onClick={handleMeteoriteClick} />
         <Meteorite onClick={handleMeteoriteClick} />
-        <Meteorite onClick={handleMeteoriteClick} />
-        <Meteorite onClick={handleMeteoriteClick} />
+        <Meteorite onClick={handleMeteoriteClick} /> */}
       </Canvas>
     </div>
   );
