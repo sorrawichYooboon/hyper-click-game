@@ -30,26 +30,14 @@ const HyperClickGame: React.FC = () => {
     <div className="w-screen h-screen bg-black overflow-hidden">
       <Overlay handleGameStart={handleGameStart} gameStart={gameStart} />
       <span className="z-10 text-white">score: {score}</span>
-      <Canvas camera={{ fov: 75, near: 0.1, far: 1000, position: [0, 0, 5] }}>
+      <Canvas>
         <Stage environment="city">
-          <Stars />
-          <OrbitControls
-            target={[0, 0, 0]}
-            makeDefault
-            enableZoom={false}
-            enablePan={false}
-          />
+          <Stars position={[0, 0, 0]} />
+          <OrbitControls />
         </Stage>
         {Array.from({ length: 8 }, (_, index) => (
           <Meteorite key={index} onClick={handleMeteoriteClick} />
         ))}
-        {/* <Meteorite onClick={handleMeteoriteClick} />
-        <Meteorite onClick={handleMeteoriteClick} />
-        <Meteorite onClick={handleMeteoriteClick} />
-        <Meteorite onClick={handleMeteoriteClick} />
-        <Meteorite onClick={handleMeteoriteClick} />
-        <Meteorite onClick={handleMeteoriteClick} />
-        <Meteorite onClick={handleMeteoriteClick} /> */}
       </Canvas>
     </div>
   );
