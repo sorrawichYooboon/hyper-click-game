@@ -28,9 +28,13 @@ const Meteorite: React.FC<MeteoriteProps> = ({ onClick }: MeteoriteProps) => {
   useFrame(() => {
     ref.current.rotation.x += 0.01;
     ref.current.rotation.y += 0.01;
-    ref.current.position.z += Math.random() / 10;
+    ref.current.position.z += Math.random() / 20;
+    if (ref.current.position.z < -10) {
+      setScale(0);
+    }
+
     if (ref.current.position.z > 10) {
-      ref.current.position.z = -20;
+      ref.current.position.z = -30;
       setMeshPosition([
         (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
         (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
@@ -47,8 +51,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({ onClick }: MeteoriteProps) => {
       });
     } else {
       setScale((prevScale) => {
-        if (prevScale < 1) return 1;
-        return prevScale - 0.05;
+        if (prevScale > 1) return 1;
+        return prevScale + 0.005;
       });
     }
   });
