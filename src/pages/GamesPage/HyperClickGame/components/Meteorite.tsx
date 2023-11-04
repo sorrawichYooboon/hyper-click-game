@@ -9,51 +9,51 @@ import {
 
 interface MeteoriteProps {
   onClick: () => void;
+  delayGeneration?: number;
 }
 
-const Meteorite: React.FC<MeteoriteProps> = ({ onClick }: MeteoriteProps) => {
+const Meteorite: React.FC<MeteoriteProps> = ({
+  onClick,
+  delayGeneration,
+}: MeteoriteProps) => {
   const ref = useRef<THREE.Mesh>(null!);
   const [meshPosition, setMeshPosition] = useState<[number, number, number]>([
-    Math.random() * 10 * randomPositionOrNegativeNumber(),
-    Math.random() * 10 * randomPositionOrNegativeNumber(),
-    -11,
+    (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
+    (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
+    -(Math.random() * 10 + 30),
   ]);
   const [meshColor, setMeshColor] = useState<string>(randomColor());
   const [mestText, setMeshText] = useState<string>(
     Math.floor(Math.random() * 4 + 1).toString()
   );
   const [onHover, setOnHover] = useState<boolean>(false);
-  const [scale, setScale] = useState<number>(1);
+  const [scale, setScale] = useState<number>(0);
 
   useFrame(() => {
     ref.current.rotation.x += 0.01;
     ref.current.rotation.y += 0.01;
-    ref.current.position.z += Math.random() / 20;
-    if (ref.current.position.z < -10) {
+    ref.current.position.z += Math.random() / 5;
+    if (ref.current.position.z < -30) {
       setScale(0);
     }
 
-    if (ref.current.position.z > 10) {
-      ref.current.position.z = -30;
+    if (ref.current.position.z > 30) {
+      setScale(0);
       setMeshPosition([
         (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
         (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-        -(Math.random() * 10 + 5),
+        -(Math.random() * 10 + 30),
       ]);
       setMeshColor(randomColor());
       setMeshText(Math.floor(Math.random() * 4 + 1).toString());
     }
 
     if (onHover) {
-      setScale((prevScale) => {
-        if (prevScale > 1.5) return 1.5;
-        return prevScale + 0.05;
-      });
+      setScale((prevScale) => (prevScale > 1.5 ? prevScale : prevScale + 0.05));
     } else {
-      setScale((prevScale) => {
-        if (prevScale > 1) return 1;
-        return prevScale + 0.005;
-      });
+      setScale((prevScale) =>
+        prevScale < 1 ? prevScale + 0.05 : prevScale - 0.05
+      );
     }
   });
 
@@ -76,7 +76,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({ onClick }: MeteoriteProps) => {
       onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
     >
       <boxGeometry args={[0.5, 0.5, 0.5]} />
-      <meshStandardMaterial color={meshColor} />
+      <meshPhysicalMaterial color={meshColor} />
       {textsPosition.map((text, index) => (
         <Text
           key={index}
