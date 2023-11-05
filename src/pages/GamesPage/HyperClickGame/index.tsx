@@ -20,22 +20,22 @@ const HyperClickGame: React.FC = () => {
     setIsGameStarted(true);
   };
 
-  const handleMeteoriteClick = () => {
-    setScore((prevScore) => prevScore + 1);
-  };
-
   return (
     <div className="w-screen h-screen bg-black overflow-hidden">
       <Overlay handleGameStart={handleGameStart} gameStart={isGameStarted} />
-      <span className="z-10 text-white">score: {score}</span>
+      <span className="z-10 text-white select-none">score: {score}</span>
       <Canvas>
         <Stars />
         <rectAreaLight width={10} height={10} position={[0, 0, 5]} castShadow />
         <Camera isGameStarted={isGameStarted} />
         <ambientLight intensity={0.5} />
-        {Array.from({ length: 5 }, (_, index) => (
-          <Meteorite key={index} onClick={handleMeteoriteClick} />
-        ))}
+        {isGameStarted && (
+          <>
+            <Meteorite numberToClickGoal={1} setScore={setScore} />
+            <Meteorite numberToClickGoal={2} setScore={setScore} />
+            <Meteorite numberToClickGoal={3} setScore={setScore} />
+          </>
+        )}
       </Canvas>
     </div>
   );

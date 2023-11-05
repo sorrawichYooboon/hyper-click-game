@@ -9,4 +9,12 @@ export const randomColor = () => {
 
 export const randomNumber = () => {
   return Math.floor(Math.random() * 10);
-}; 
+};
+
+export const randomNumberRange = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+export const randomNumberRangeFloat = (min: number, max: number) => {
+  return Math.random() * (max - min) + min;
+};

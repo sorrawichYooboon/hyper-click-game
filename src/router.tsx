@@ -21,7 +21,7 @@ export default function Router() {
   return (
     <>
       <Routes>
-        <Route path="*" element={<Navigate to="/games" />} />
+        <Route path="*" element={<Navigate to="/games/hyper-click" />} />
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/games" element={<GamesPage />} />
         <Route path="/games/hyper-click" element={<HyperClickGame />} />

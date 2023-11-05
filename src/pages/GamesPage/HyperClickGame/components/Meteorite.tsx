@@ -2,19 +2,33 @@ import { ThreeEvent, useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { Text } from "@react-three/drei";
-import {
-  randomPositionOrNegativeNumber,
-  randomColor,
-} from "src/utils/calculations";
+import { randomPositionOrNegativeNumber } from "src/utils/calculations";
 
 interface MeteoriteProps {
-  onClick: () => void;
-  delayGeneration?: number;
+  numberToClickGoal: number;
+  setScore: any;
 }
 
+const mappingNumberColor = (number: number) => {
+  switch (number) {
+    case 1:
+      return "#03D7AE";
+    case 2:
+      return "#08C4EC";
+    case 3:
+      return "#307ADF";
+    case 4:
+      return "#F26546";
+    case 5:
+      return "#D436C5";
+    default:
+      return "#FFFFFF";
+  }
+};
+
 const Meteorite: React.FC<MeteoriteProps> = ({
-  onClick,
-  delayGeneration,
+  numberToClickGoal,
+  setScore,
 }: MeteoriteProps) => {
   const ref = useRef<THREE.Mesh>(null!);
   const [meshPosition, setMeshPosition] = useState<[number, number, number]>([
@@ -22,37 +36,47 @@ const Meteorite: React.FC<MeteoriteProps> = ({
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
     -(Math.random() * 10 + 30),
   ]);
-  const [meshColor, setMeshColor] = useState<string>(randomColor());
-  const [mestText, setMeshText] = useState<string>(
-    Math.floor(Math.random() * 4 + 1).toString()
+  const [meshColor, setMeshColor] = useState<string>(
+    mappingNumberColor(numberToClickGoal)
   );
+  const [mestText, setMeshText] = useState<number>(numberToClickGoal);
+  const [clickCount, setClickCount] = useState<number>(0);
   const [onHover, setOnHover] = useState<boolean>(false);
-  const [scale, setScale] = useState<number>(0);
+  const [scale, setScale] = useState<number>(1.5);
+
+  const handleMeteoriteClick = () => {
+    setClickCount((prevClick) => prevClick + 1);
+  };
 
   useFrame(() => {
-    ref.current.rotation.x += 0.01;
-    ref.current.rotation.y += 0.01;
+    ref.current.rotation.x += 0.03;
+    ref.current.rotation.y += 0.03;
     ref.current.position.z += Math.random() / 5;
     if (ref.current.position.z < -30) {
       setScale(0);
     }
 
-    if (ref.current.position.z > 30) {
+    if (ref.current.position.z > 30 || clickCount >= numberToClickGoal) {
+      if (clickCount >= numberToClickGoal) {
+        setScore((prevScore: any) => prevScore + 1);
+      }
+
       setScale(0);
+      setClickCount(0);
       setMeshPosition([
         (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
         (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
         -(Math.random() * 10 + 30),
       ]);
-      setMeshColor(randomColor());
-      setMeshText(Math.floor(Math.random() * 4 + 1).toString());
+      setMeshColor(mappingNumberColor(numberToClickGoal));
+      setMeshText(numberToClickGoal);
     }
 
     if (onHover) {
-      setScale((prevScale) => (prevScale > 1.5 ? prevScale : prevScale + 0.05));
+      setScale((prevScale) => (prevScale > 2.5 ? prevScale : prevScale + 0.05));
     } else {
       setScale((prevScale) =>
-        prevScale < 1 ? prevScale + 0.05 : prevScale - 0.05
+        prevScale < 1.5 ? prevScale + 0.05 : prevScale - 0.05
       );
     }
   });
@@ -68,10 +92,13 @@ const Meteorite: React.FC<MeteoriteProps> = ({
 
   return (
     <mesh
-      onClick={onClick}
       ref={ref}
       position={meshPosition}
       scale={scale}
+      onPointerUp={(e) => {
+        e.stopPropagation();
+        handleMeteoriteClick();
+      }}
       onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
       onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
     >
