@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import Stars from "src/pages/GamesPage/HyperClickGame/components/Stars";
 import Overlay from "src/pages/GamesPage/HyperClickGame/components/Overlay";
@@ -6,10 +6,13 @@ import Camera from "src/pages/GamesPage/HyperClickGame/components/Camera";
 import inspiringSound from "src/assets/emotional-inspiring-epic-trailer-11258.mp3";
 import Meteorite from "src/pages/GamesPage/HyperClickGame/components/Meteorite";
 import useSound from "use-sound";
+import { Button } from "@mui/material";
 
 const HyperClickGame: React.FC = () => {
   const [score, setScore] = useState<number>(0);
+  const [life, setLife] = useState<number>(5);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [play] = useSound(inspiringSound, {
     volume: 0.05,
   });
@@ -17,13 +20,23 @@ const HyperClickGame: React.FC = () => {
   const handleGameStart = () => {
     if (isGameStarted) return;
     play();
+    setLife(5);
     setIsGameStarted(true);
   };
+
+  useEffect(() => {
+    if (life === 0) {
+      setIsGameStarted(false);
+      setIsGameOver(true);
+    }
+  }, [life]);
 
   return (
     <div className="w-screen h-screen bg-black overflow-hidden">
       <Overlay handleGameStart={handleGameStart} gameStart={isGameStarted} />
-      <span className="z-10 text-white select-none">score: {score}</span>
+      <h3 className="z-10 text-white select-none">Score: {score}</h3>
+      <h3 className="z-10 text-white select-none">Life: {life}</h3>
+      {isGameOver && <Button>GAME OVER</Button>}
       <Canvas>
         <Stars />
         <rectAreaLight width={10} height={10} position={[0, 0, 5]} castShadow />
@@ -31,9 +44,21 @@ const HyperClickGame: React.FC = () => {
         <ambientLight intensity={0.5} />
         {isGameStarted && (
           <>
-            <Meteorite numberToClickGoal={1} setScore={setScore} />
-            <Meteorite numberToClickGoal={2} setScore={setScore} />
-            <Meteorite numberToClickGoal={3} setScore={setScore} />
+            <Meteorite
+              numberToClickGoal={1}
+              setScore={setScore}
+              setLife={setLife}
+            />
+            <Meteorite
+              numberToClickGoal={2}
+              setScore={setScore}
+              setLife={setLife}
+            />
+            <Meteorite
+              numberToClickGoal={3}
+              setScore={setScore}
+              setLife={setLife}
+            />
           </>
         )}
       </Canvas>

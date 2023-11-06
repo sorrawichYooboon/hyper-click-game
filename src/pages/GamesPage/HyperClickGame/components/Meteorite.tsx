@@ -7,6 +7,7 @@ import { randomPositionOrNegativeNumber } from "src/utils/calculations";
 interface MeteoriteProps {
   numberToClickGoal: number;
   setScore: any;
+  setLife: any;
 }
 
 const mappingNumberColor = (number: number) => {
@@ -29,6 +30,7 @@ const mappingNumberColor = (number: number) => {
 const Meteorite: React.FC<MeteoriteProps> = ({
   numberToClickGoal,
   setScore,
+  setLife,
 }: MeteoriteProps) => {
   const ref = useRef<THREE.Mesh>(null!);
   const [meshPosition, setMeshPosition] = useState<[number, number, number]>([
@@ -56,7 +58,11 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       setScale(0);
     }
 
-    if (ref.current.position.z > 30 || clickCount >= numberToClickGoal) {
+    if (ref.current.position.z > 10 || clickCount >= numberToClickGoal) {
+      if (ref.current.position.z > 10) {
+        setLife((prevLife: any) => prevLife - 1);
+      }
+
       if (clickCount >= numberToClickGoal) {
         setScore((prevScore: any) => prevScore + 1);
       }
