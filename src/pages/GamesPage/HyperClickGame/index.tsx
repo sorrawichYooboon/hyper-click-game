@@ -3,7 +3,8 @@ import { Canvas } from "@react-three/fiber";
 import Stars from "src/pages/GamesPage/HyperClickGame/components/Stars";
 import Overlay from "src/pages/GamesPage/HyperClickGame/components/Overlay";
 import Camera from "src/pages/GamesPage/HyperClickGame/components/Camera";
-import inspiringSound from "src/assets/emotional-inspiring-epic-trailer-11258.mp3";
+import abstractSound from "src/assets/floating-abstract-142819.mp3";
+import gameStartClickSound from "src/assets/mixkit-water-sci-fi-bleep-902.mp3";
 import Meteorite from "src/pages/GamesPage/HyperClickGame/components/Meteorite";
 import useSound from "use-sound";
 import { Button } from "@mui/material";
@@ -13,13 +14,21 @@ const HyperClickGame: React.FC = () => {
   const [life, setLife] = useState<number>(5);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
-  const [play] = useSound(inspiringSound, {
-    volume: 0.05,
+  const [playAbstractSound, { stop: stopAbstractSound }] = useSound(
+    abstractSound,
+    {
+      volume: 0.3,
+      loop: true,
+    }
+  );
+  const [playGameStartClickSound] = useSound(gameStartClickSound, {
+    volume: 0.3,
   });
 
   const handleGameStart = () => {
     if (isGameStarted) return;
-    play();
+    playAbstractSound();
+    playGameStartClickSound();
     setLife(5);
     setIsGameStarted(true);
   };
@@ -28,6 +37,7 @@ const HyperClickGame: React.FC = () => {
     if (life === 0) {
       setIsGameStarted(false);
       setIsGameOver(true);
+      stopAbstractSound();
     }
   }, [life]);
 

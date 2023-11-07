@@ -3,6 +3,10 @@ import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { Text } from "@react-three/drei";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
+import meteoriteClickSound from "src/assets/shooting-sound-fx-159024.mp3";
+import getScore from "src/assets/mixkit-opening-software-interface-2578.mp3";
+import lostLife from "src/assets/mixkit-negative-tone-interface-tap-2569.mp3";
+import useSound from "use-sound";
 
 interface MeteoriteProps {
   numberToClickGoal: number;
@@ -41,13 +45,29 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const [meshColor, setMeshColor] = useState<string>(
     mappingNumberColor(numberToClickGoal)
   );
+  const [mestColorText, setMeshColorText] = useState<string>("#F1EFF4");
   const [mestText, setMeshText] = useState<number>(numberToClickGoal);
   const [clickCount, setClickCount] = useState<number>(0);
   const [onHover, setOnHover] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1.5);
+  const [playMeteoriteClickSound] = useSound(meteoriteClickSound, {
+    volume: 0.5,
+  });
+  const [playGetScoreSound] = useSound(getScore, { volume: 0.3 });
+  const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
 
   const handleMeteoriteClick = () => {
+    setMeshColor("#F1EFF4");
+    setMeshColorText("#000000");
+    setScale(2.7);
+    setTimeout(() => {
+      setMeshColor(mappingNumberColor(numberToClickGoal));
+      setMeshColorText("#F1EFF4");
+    }, 100);
     setClickCount((prevClick) => prevClick + 1);
+    if (clickCount < numberToClickGoal) {
+      playMeteoriteClickSound();
+    }
   };
 
   useFrame(() => {
@@ -58,13 +78,15 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       setScale(0);
     }
 
-    if (ref.current.position.z > 10 || clickCount >= numberToClickGoal) {
-      if (ref.current.position.z > 10) {
+    if (ref.current.position.z > 4 || clickCount >= numberToClickGoal) {
+      if (ref.current.position.z > 4) {
         setLife((prevLife: any) => prevLife - 1);
+        playLostLifeSound();
       }
 
       if (clickCount >= numberToClickGoal) {
         setScore((prevScore: any) => prevScore + 1);
+        playGetScoreSound();
       }
 
       setScale(0);
@@ -116,7 +138,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
           position={text.position as [number, number, number]}
           fontSize={0.4}
           rotation={text.rotation as [number, number, number]}
-          color="#F1EFF4"
+          color={mestColorText}
         >
           {mestText}
         </Text>
