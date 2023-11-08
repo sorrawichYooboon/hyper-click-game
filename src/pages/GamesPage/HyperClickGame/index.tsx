@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import Stars from "src/pages/GamesPage/HyperClickGame/components/Stars";
 import Overlay from "src/pages/GamesPage/HyperClickGame/components/Overlay";
@@ -6,6 +6,7 @@ import Camera from "src/pages/GamesPage/HyperClickGame/components/Camera";
 import abstractSound from "src/assets/floating-abstract-142819.mp3";
 import gameStartClickSound from "src/assets/mixkit-water-sci-fi-bleep-902.mp3";
 import Meteorite from "src/pages/GamesPage/HyperClickGame/components/Meteorite";
+import FakeMeteorite from "src/pages/GamesPage/HyperClickGame/components/FakeMeteorite";
 import useSound from "use-sound";
 import { Button } from "@mui/material";
 
@@ -69,6 +70,8 @@ const HyperClickGame: React.FC = () => {
               setScore={setScore}
               setLife={setLife}
             />
+            <FakeMeteorite setLife={setLife} />
+            <FakeMeteorite setLife={setLife} />
           </>
         )}
       </Canvas>
