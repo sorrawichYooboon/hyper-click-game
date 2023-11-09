@@ -23,7 +23,7 @@ const HyperClickGame: React.FC = () => {
     }
   );
   const [playGameStartClickSound] = useSound(gameStartClickSound, {
-    volume: 0.3,
+    volume: 0.4,
   });
 
   const handleGameStart = () => {
