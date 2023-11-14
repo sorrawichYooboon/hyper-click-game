@@ -5,6 +5,8 @@ import Overlay from "src/pages/GamesPage/HyperClickGame/components/Overlay";
 import Camera from "src/pages/GamesPage/HyperClickGame/components/Camera";
 import abstractSound from "src/assets/floating-abstract-142819.mp3";
 import gameStartClickSound from "src/assets/mixkit-water-sci-fi-bleep-902.mp3";
+import lowCombo from "src/assets/combo1.mp3";
+import highCombo from "src/assets/combo2.mp3";
 import Meteorite from "src/pages/GamesPage/HyperClickGame/components/Meteorite";
 import FakeMeteorite from "src/pages/GamesPage/HyperClickGame/components/FakeMeteorite";
 import useSound from "use-sound";
@@ -25,6 +27,8 @@ const HyperClickGame: React.FC = () => {
   const [playGameStartClickSound] = useSound(gameStartClickSound, {
     volume: 0.4,
   });
+  const [playLowComboSound] = useSound(lowCombo, { volume: 1 });
+  const [playHighComboSound] = useSound(highCombo, { volume: 1 });
 
   const handleGameStart = () => {
     if (isGameStarted) return;
@@ -42,10 +46,28 @@ const HyperClickGame: React.FC = () => {
     }
   }, [life]);
 
+  useEffect(() => {
+    if (score % 5 === 0 && score !== 0) {
+      playLowComboSound();
+    }
+  }, [score]);
+
   return (
     <div className="w-screen h-screen bg-black overflow-hidden">
       <Overlay handleGameStart={handleGameStart} gameStart={isGameStarted} />
-      <h3 className="z-10 text-white select-none">Score: {score}</h3>
+      {score > 0 && (
+        <div className="z-10 text-white select-none absolute right-[25%] top-[20%] w-[200px] h-[100px]">
+          <div className="flex justify-center items-center h-full w-full">
+            <span
+              className={`text-3xl italic ${
+                score % 5 === 0 && score !== 0 && "text-[80px]"
+              }`}
+            >
+              {score}
+            </span>
+          </div>
+        </div>
+      )}
       <h3 className="z-10 text-white select-none">Life: {life}</h3>
       {isGameOver && <Button>GAME OVER</Button>}
       <Canvas>
