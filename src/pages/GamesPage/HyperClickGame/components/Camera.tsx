@@ -10,7 +10,8 @@ const Camera: React.FC<CameraProps> = ({ isGameStarted }) => {
     <OrbitControls
       enableZoom={false}
       enablePan={false}
-      enabled={!isGameStarted}
+      enabled={false}
+      // enabled={!isGameStarted}
     />
   );
 };

@@ -4,9 +4,14 @@ import Button from "src/components/Button";
 interface OverlayProps {
   handleGameStart: () => void;
   gameStart: boolean;
+  gameOver: boolean;
 }
 
-const Overlay: React.FC<OverlayProps> = ({ handleGameStart, gameStart }) => {
+const Overlay: React.FC<OverlayProps> = ({
+  handleGameStart,
+  gameStart,
+  gameOver,
+}) => {
   const [fadeIn, setFadeIn] = useState<boolean>(false);
 
   useEffect(() => {
@@ -33,10 +38,12 @@ const Overlay: React.FC<OverlayProps> = ({ handleGameStart, gameStart }) => {
       >
         <div className="flex flex-col justify-center items-center">
           <div className="mb-10">
-            <h1 className="text-[64px]">Hyper Click Game</h1>
+            <h1 className="text-[64px]">
+              {gameOver ? "Game Over" : "Hyper Click Game"}
+            </h1>
           </div>
           <Button
-            label="START"
+            label={gameOver ? "Play Again" : "Start"}
             color="blue"
             type="outline"
             className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-blue !bg-opacity-5"

@@ -12,6 +12,7 @@ interface MeteoriteProps {
   numberToClickGoal: number;
   setScore: any;
   setLife: any;
+  isGameStarted: boolean;
 }
 
 const mappingNumberColor = (number: number) => {
@@ -35,6 +36,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   numberToClickGoal,
   setScore,
   setLife,
+  isGameStarted,
 }: MeteoriteProps) => {
   const ref = useRef<THREE.Mesh>(null!);
   const [meshPosition, setMeshPosition] = useState<[number, number, number]>([
@@ -49,7 +51,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const [mestText, setMeshText] = useState<number>(numberToClickGoal);
   const [clickCount, setClickCount] = useState<number>(0);
   const [onHover, setOnHover] = useState<boolean>(false);
-  const [scale, setScale] = useState<number>(1.5);
+  const [scale, setScale] = useState<number>(0);
   const [playMeteoriteClickSound] = useSound(meteoriteClickSound, {
     volume: 0.5,
   });
@@ -71,9 +73,20 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   };
 
   useFrame(() => {
-    ref.current.rotation.x += 0.03 * window.devicePixelRatio;
-    ref.current.rotation.y += 0.03 * window.devicePixelRatio;
-    ref.current.position.z += (Math.random() / 7) * window.devicePixelRatio;
+    if (!isGameStarted) {
+      setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
+      if (scale === 0) {
+        setMeshPosition([
+          (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
+          (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
+          -(Math.random() * 10 + 30),
+        ]);
+      }
+      return;
+    }
+    ref.current.rotation.x += 0.04 * window.devicePixelRatio;
+    ref.current.rotation.y += 0.04 * window.devicePixelRatio;
+    ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
     if (ref.current.position.z < -30) {
       setScale(0);
     }

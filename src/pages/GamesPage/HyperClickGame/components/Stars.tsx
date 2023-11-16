@@ -4,7 +4,7 @@ import { useRef, memo } from "react";
 
 const Stars = (props: any) => {
   const ref = useRef<THREE.Mesh>(null!);
-  const sphere = new Float32Array(5000 * 3);
+  const sphere = new Float32Array(1000 * 3);
   for (let i = 0; i < sphere.length; i += 3) {
     const radius = 4;
     const theta = Math.random() * Math.PI * 2;

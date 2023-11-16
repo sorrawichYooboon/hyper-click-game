@@ -9,10 +9,12 @@ import useSound from "use-sound";
 
 interface FakeMeteoriteProps {
   setLife: any;
+  isGameStarted: boolean;
 }
 
 const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   setLife,
+  isGameStarted,
   ...props
 }: FakeMeteoriteProps) => {
   const { nodes, materials } = useGLTF("/earth.gltf") as any;
@@ -27,7 +29,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   const [mestText, setMeshText] = useState<string>("X");
   const [isHide, setIsHide] = useState<boolean>(false);
   const [onHover, setOnHover] = useState<boolean>(false);
-  const [scale, setScale] = useState<number>(0.25);
+  const [scale, setScale] = useState<number>(0);
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
 
   const handleMeteoriteClick = () => {
@@ -38,8 +40,19 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   };
 
   useFrame(() => {
-    ref.current.rotation.x += 0.03 * window.devicePixelRatio;
-    ref.current.rotation.y += 0.03 * window.devicePixelRatio;
+    if (!isGameStarted) {
+      setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
+      if (scale === 0) {
+        setMeshPosition([
+          (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
+          (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
+          -(Math.random() * 10 + 30),
+        ]);
+      }
+      return;
+    }
+    ref.current.rotation.x += 0.04 * window.devicePixelRatio;
+    ref.current.rotation.y += 0.04 * window.devicePixelRatio;
     ref.current.position.z += (Math.random() / 5) * window.devicePixelRatio;
     if (ref.current.position.z < -30) {
       setScale(0);
