@@ -54,10 +54,6 @@ module.exports = {
       "2xl": ["24px", "36px"],
       "3xl": ["32px", "48px"],
     },
-    fontFamily: {
-      sans: ["Noto Sans Thai", "sans-serif"],
-      mono: ["Roboto", "sans-serif"],
-    },
     fontWeight: {
       hairline: 100,
       thin: 200,

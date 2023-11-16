@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaShieldHeart } from "react-icons/fa6";
 import { Canvas } from "@react-three/fiber";
 import Stars from "src/pages/GamesPage/HyperClickGame/components/Stars";
 import Overlay from "src/pages/GamesPage/HyperClickGame/components/Overlay";
@@ -9,7 +10,6 @@ import lowCombo from "src/assets/combo1.mp3";
 import Meteorite from "src/pages/GamesPage/HyperClickGame/components/Meteorite";
 import FakeMeteorite from "src/pages/GamesPage/HyperClickGame/components/FakeMeteorite";
 import useSound from "use-sound";
-import { Button } from "@mui/material";
 
 const HyperClickGame: React.FC = () => {
   const [score, setScore] = useState<number>(0);
@@ -33,8 +33,11 @@ const HyperClickGame: React.FC = () => {
     playAbstractSound();
     playGameStartClickSound();
     setLife(5);
-    setIsGameOver(false);
     setIsGameStarted(true);
+
+    setTimeout(() => {
+      setIsGameOver(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -72,14 +75,49 @@ const HyperClickGame: React.FC = () => {
           </div>
         </div>
       )}
-      <h3 className="z-10 text-white select-none">Life: {life}</h3>
-      {isGameOver && <Button>GAME OVER</Button>}
+      <div
+        className={`opacity-0 transition-all duration-700 z-10 text-white select-none fixed bottom-0 mb-14 text-xl ${
+          isGameStarted ? "opacity-100" : "opacity-0"
+        } ${
+          life === 5
+            ? `right-[45%]`
+            : life === 4
+            ? `right-[46%]`
+            : life === 3
+            ? `right-[47%]`
+            : life === 2
+            ? `right-[48%]`
+            : life === 1
+            ? `right-[49%]`
+            : `right-[50%]`
+        }
+        `}
+      >
+        <div className="flex items-center">
+          <span className="mr-4">PAUSE</span>
+          <span>LIFE:</span>
+          <div className="ml-2 flex">
+            {Array.from(Array(life).keys()).map((_, index) => (
+              <FaShieldHeart
+                key={index}
+                className="text-[#08C4EC] text-3xl ml-1"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
       <Canvas>
         <Stars />
         <rectAreaLight width={10} height={10} position={[0, 0, 5]} castShadow />
         <Camera isGameStarted={isGameStarted} />
         <ambientLight intensity={0.5} />
 
+        <Meteorite
+          numberToClickGoal={1}
+          setScore={setScore}
+          setLife={setLife}
+          isGameStarted={isGameStarted}
+        />
         <Meteorite
           numberToClickGoal={1}
           setScore={setScore}
