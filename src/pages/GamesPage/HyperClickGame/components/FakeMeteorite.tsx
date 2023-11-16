@@ -10,11 +10,13 @@ import useSound from "use-sound";
 interface FakeMeteoriteProps {
   setLife: any;
   isGameStarted: boolean;
+  isGamePaused: boolean;
 }
 
 const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   setLife,
   isGameStarted,
+  isGamePaused,
   ...props
 }: FakeMeteoriteProps) => {
   const { nodes, materials } = useGLTF("/earth.gltf") as any;
@@ -33,6 +35,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
 
   const handleMeteoriteClick = () => {
+    if (isGamePaused) return;
     setLife((prevLife: any) => prevLife - 1);
     playLostLifeSound();
     setScale(0);
@@ -40,6 +43,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   };
 
   useFrame(() => {
+    if (isGamePaused) return;
     if (!isGameStarted) {
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
       if (scale === 0) {
