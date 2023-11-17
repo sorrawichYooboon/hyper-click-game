@@ -5,13 +5,14 @@ import { Canvas } from "@react-three/fiber";
 import Stars from "src/pages/GamesPage/HyperClickGame/components/Stars";
 import Overlay from "src/pages/GamesPage/HyperClickGame/components/Overlay";
 import Camera from "src/pages/GamesPage/HyperClickGame/components/Camera";
-import abstractSound from "src/assets/floating-abstract-142819.mp3";
-import gameStartClickSound from "src/assets/mixkit-water-sci-fi-bleep-902.mp3";
-import lowCombo from "src/assets/combo1.mp3";
-import powerUp from "src/assets/power-up.mp3";
-import powerDown from "src/assets/power-down.mp3";
+import abstractSound from "src/assets/sounds/abstract_1.mp3";
+import gameStartClickSound from "src/assets/sounds/game_start_1.mp3";
+import lowCombo from "src/assets/sounds/combo_1.mp3";
+import powerUp from "src/assets/sounds/power_up_1.mp3";
+import powerDown from "src/assets/sounds/power_down_1.mp3";
 import Meteorite from "src/pages/GamesPage/HyperClickGame/components/Meteorite";
 import FakeMeteorite from "src/pages/GamesPage/HyperClickGame/components/FakeMeteorite";
+import { TbSpace } from "react-icons/tb";
 import useSound from "use-sound";
 
 const HyperClickGame: React.FC = () => {
@@ -49,16 +50,7 @@ const HyperClickGame: React.FC = () => {
   };
 
   const handlePauseGame = () => {
-    setIsGamePaused((prevIsGamePaused) => {
-      if (prevIsGamePaused) {
-        playAbstractSound();
-        playPowerUpSound();
-      } else {
-        pauseAbstractSound();
-        playPowerDownSound();
-      }
-      return !prevIsGamePaused;
-    });
+    setIsGamePaused((prevIsGamePaused) => !prevIsGamePaused);
   };
 
   const handleMuteSound = () => {
@@ -68,6 +60,29 @@ const HyperClickGame: React.FC = () => {
       setAbstractSoundVolumn(0);
     }
   };
+
+  const handleKeyDown = (event: any) => {
+    if (event.code === "Space") {
+      setIsGamePaused((prevIsGamePaused) => !prevIsGamePaused);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  });
+
+  useEffect(() => {
+    if (!isGamePaused) {
+      playAbstractSound();
+      playPowerUpSound();
+    } else {
+      pauseAbstractSound();
+      playPowerDownSound();
+    }
+  }, [isGamePaused]);
 
   useEffect(() => {
     if (life === 0) {
@@ -126,31 +141,41 @@ const HyperClickGame: React.FC = () => {
           <span>LIFE:</span>
           <div className="ml-2 flex">
             {Array.from(Array(life).keys()).map((_, index) => (
-              <FaShieldHeart
-                key={index}
-                className="text-[#08C4EC] text-3xl ml-1"
-              />
+              <FaShieldHeart key={index} className="text-aqua text-3xl ml-1" />
             ))}
           </div>
         </div>
       </div>
       <div className="fixed right-0 mt-4 mr-4 z-10">
-        <Button
-          label={isGamePaused ? "Resume" : "Pause"}
-          color="aqua"
-          type="outline"
-          className={`!opacity-0 !transition-all !duration-700 !z-20 w-[70px] h-[40px] text-[24px] !text-white !bg-blue !bg-opacity-5 ${
-            isGameStarted ? "!opacity-100" : "!opacity-0 !pointer-events-none"
-          }`}
-          onClick={() => handlePauseGame()}
-        />
-        <Button
-          label={abstractSoundVolumn === 0 ? "Unmute" : "Mute"}
-          color="green"
-          type="outline"
-          className="z-20 w-[120px] h-[40px] text-[24px] !text-white !bg-blue !bg-opacity-5 !ml-2"
-          onClick={() => handleMuteSound()}
-        />
+        <div className="flex">
+          <div className="flex flex-col justify-center items-center">
+            <Button
+              label={isGamePaused ? "Resume" : "Pause"}
+              color="aqua"
+              type="outline"
+              className={`!opacity-0 !transition-all !duration-700 !z-20 w-[70px] h-[40px] text-[24px] !text-white !bg-blue !bg-opacity-5 ${
+                isGameStarted
+                  ? "!opacity-100"
+                  : "!opacity-0 !pointer-events-none"
+              }`}
+              onClick={() => handlePauseGame()}
+            />
+            <div
+              className={`text-aqua opacity-0 transition-all duration-700 z-20 select-none text-xs mt-1 ${
+                isGameStarted ? "!opacity-100" : "!opacity-0"
+              }`}
+            >
+              SPACE BAR
+            </div>
+          </div>
+          <Button
+            label={abstractSoundVolumn === 0 ? "Unmute" : "Mute"}
+            color="green"
+            type="outline"
+            className="z-20 w-[120px] h-[40px] text-[24px] !text-white !bg-blue !bg-opacity-5 !ml-2"
+            onClick={() => handleMuteSound()}
+          />
+        </div>
       </div>
       <Canvas>
         <Stars />

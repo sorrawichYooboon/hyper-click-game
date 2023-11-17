@@ -3,9 +3,9 @@ import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { Text } from "@react-three/drei";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
-import meteoriteClickSound from "src/assets/shooting-sound-fx-159024.mp3";
-import getScore from "src/assets/mixkit-opening-software-interface-2578.mp3";
-import lostLife from "src/assets/mixkit-negative-tone-interface-tap-2569.mp3";
+import meteoriteClickSound from "src/assets/sounds/lost_life_2.mp3";
+import getScore from "src/assets/sounds/get_score_1.mp3";
+import lostLife from "src/assets/sounds/lost_life_1.mp3";
 import useSound from "use-sound";
 
 interface MeteoriteProps {

@@ -42,6 +42,11 @@ const Overlay: React.FC<OverlayProps> = ({
               {gameOver ? "Game Over" : "Hyper Click Game"}
             </h1>
           </div>
+          <div className="flex">
+            <div>Tutorial</div>
+            <div>Select Mode</div>
+            <div>Score board</div>
+          </div>
           <Button
             label={gameOver ? "Play Again" : "Start"}
             color="blue"

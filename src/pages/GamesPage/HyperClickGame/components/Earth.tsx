@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 
 export default function Model({ ...props }) {
   const group = useRef(null);
-  const { nodes, materials } = useGLTF("/earth.gltf") as any;
+  const { nodes, materials } = useGLTF("/models/earth.gltf") as any;
   return (
     <group ref={group} {...props}>
       <mesh
@@ -20,4 +20,4 @@ export default function Model({ ...props }) {
   );
 }
 
-useGLTF.preload("/earth.gltf");
+useGLTF.preload("/models/earth.gltf");

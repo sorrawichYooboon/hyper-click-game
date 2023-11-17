@@ -3,6 +3,11 @@ declare module "*.mp3" {
   export default value;
 }
 
+declare module "*.gltf" {
+  const value: any;
+  export default value;
+}
+
 declare module "use-sound" {
   type PlayOptions = {
     volume?: number;

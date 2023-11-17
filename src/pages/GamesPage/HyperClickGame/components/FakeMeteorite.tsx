@@ -4,7 +4,7 @@ import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { Text } from "@react-three/drei";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
-import lostLife from "src/assets/mixkit-negative-tone-interface-tap-2569.mp3";
+import lostLife from "src/assets/sounds/lost_life_1.mp3";
 import useSound from "use-sound";
 
 interface FakeMeteoriteProps {
@@ -19,7 +19,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   isGamePaused,
   ...props
 }: FakeMeteoriteProps) => {
-  const { nodes, materials } = useGLTF("/earth.gltf") as any;
+  const { nodes, materials } = useGLTF("/models/earth.gltf") as any;
   const ref = useRef<any>(null);
   const [meshPosition, setMeshPosition] = useState<[number, number, number]>([
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
