@@ -6,14 +6,7 @@ interface CameraProps {
 }
 
 const Camera: React.FC<CameraProps> = ({ isGameStarted }) => {
-  return (
-    <OrbitControls
-      enableZoom={false}
-      enablePan={false}
-      enabled={false}
-      // enabled={!isGameStarted}
-    />
-  );
+  return <OrbitControls enableZoom={false} enablePan={false} enabled={false} />;
 };
 
 export default Camera;

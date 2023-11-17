@@ -1,9 +1,7 @@
-import { ThreeEvent, useFrame } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
-import { useGLTF } from "@react-three/drei";
-import * as THREE from "three";
-import { Text } from "@react-three/drei";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
+import EarthModel from "src/components/Models/Earth";
 import lostLife from "src/assets/sounds/lost_life_1.mp3";
 import useSound from "use-sound";
 
@@ -19,18 +17,17 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   isGamePaused,
   ...props
 }: FakeMeteoriteProps) => {
-  const { nodes, materials } = useGLTF("/models/earth.gltf") as any;
-  const ref = useRef<any>(null);
-  const [meshPosition, setMeshPosition] = useState<[number, number, number]>([
+  const getRandomPosition = (): [number, number, number] => [
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
     -(Math.random() * 10 + 30),
-  ]);
-  const [meshColor, setMeshColor] = useState<string>("#AE2035");
-  const [mestColorText, setMeshColorText] = useState<string>("#000000");
-  const [mestText, setMeshText] = useState<string>("X");
+  ];
+
+  const ref = useRef<any>(null);
+  const [meshPosition, setMeshPosition] = useState<[number, number, number]>(
+    () => getRandomPosition()
+  );
   const [isHide, setIsHide] = useState<boolean>(false);
-  const [onHover, setOnHover] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
 
@@ -44,14 +41,11 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
 
   useFrame(() => {
     if (isGamePaused) return;
+
     if (!isGameStarted) {
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
       if (scale === 0) {
-        setMeshPosition([
-          (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-          (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-          -(Math.random() * 10 + 30),
-        ]);
+        setMeshPosition(getRandomPosition());
       }
       return;
     }
@@ -64,11 +58,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
 
     if (ref.current.position.z > 4) {
       setScale(0);
-      setMeshPosition([
-        (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-        (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-        -(Math.random() * 10 + 30),
-      ]);
+      setMeshPosition(getRandomPosition());
       setIsHide(false);
     }
 
@@ -81,39 +71,17 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
     }
   });
 
-  const textsPosition = [
-    { position: [0, -0.05, 0.26], rotation: [0, 0, 0] },
-    { position: [0, -0.05, -0.26], rotation: [0, 3.13, 0] },
-    { position: [0, 0.26, -0.05], rotation: [1.58, 3.13, 0] },
-    { position: [0, -0.26, 0.05], rotation: [-1.58, 3.13, 0] },
-    { position: [-0.26, -0.05, 0], rotation: [0, -1.58, 0] },
-    { position: [0.26, -0.05, 0], rotation: [0, 1.58, 0] },
-  ];
-
   return (
-    <group
+    <EarthModel
       ref={ref}
-      {...props}
       position={meshPosition}
       scale={scale}
       onPointerUp={(e) => {
         e.stopPropagation();
         handleMeteoriteClick();
       }}
-      onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
-      onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
-    >
-      <mesh
-        geometry={nodes.earth4_blinn1_0.geometry}
-        material={materials.blinn1}
-        scale={[0.3, 0.3, 0.3]}
-      />
-      <mesh
-        geometry={nodes.earth4_lambert1_0.geometry}
-        material={materials.lambert1}
-        scale={[0.3, 0.3, 0.3]}
-      />
-    </group>
+      {...props}
+    />
   );
 };
 
