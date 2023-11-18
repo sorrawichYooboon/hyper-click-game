@@ -13,7 +13,7 @@ interface MeteoriteProps {
   setScore: any;
   setLife: any;
   isGameStarted: boolean;
-  isGamePaused: boolean;
+  isClickGamePaused: boolean;
 }
 
 const mappingNumberColor = (number: number) => {
@@ -38,14 +38,18 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   setScore,
   setLife,
   isGameStarted,
-  isGamePaused,
+  isClickGamePaused,
 }: MeteoriteProps) => {
-  const ref = useRef<THREE.Mesh>(null!);
-  const [meshPosition, setMeshPosition] = useState<[number, number, number]>([
+  const getRandomPosition = (): [number, number, number] => [
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
     -(Math.random() * 10 + 30),
-  ]);
+  ];
+
+  const ref = useRef<THREE.Mesh>(null!);
+  const [meshPosition, setMeshPosition] = useState<[number, number, number]>(
+    () => getRandomPosition()
+  );
   const [meshColor, setMeshColor] = useState<string>(
     mappingNumberColor(numberToClickGoal)
   );
@@ -61,7 +65,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
 
   const handleMeteoriteClick = () => {
-    if (isGamePaused) return;
+    if (isClickGamePaused) return;
     setMeshColor("#F1EFF4");
     setMeshColorText("#000000");
     setScale(2.7);
@@ -76,15 +80,11 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   };
 
   useFrame(() => {
-    if (isGamePaused) return;
+    if (isClickGamePaused) return;
     if (!isGameStarted) {
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
       if (scale === 0) {
-        setMeshPosition([
-          (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-          (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-          -(Math.random() * 10 + 30),
-        ]);
+        setMeshPosition(getRandomPosition);
       }
       return;
     }
@@ -108,11 +108,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
 
       setScale(0);
       setClickCount(0);
-      setMeshPosition([
-        (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-        (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-        -(Math.random() * 10 + 30),
-      ]);
+      setMeshPosition(getRandomPosition);
       setMeshColor(mappingNumberColor(numberToClickGoal));
       setMeshText(numberToClickGoal);
     }

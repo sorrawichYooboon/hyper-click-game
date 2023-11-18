@@ -1,23 +1,24 @@
-import { useFrame } from "@react-three/fiber";
-import React, { useRef, useState } from "react";
+import { ThreeEvent, useFrame } from "@react-three/fiber";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
-import EarthModel from "src/components/Models/Earth";
-import lostLife from "src/assets/sounds/lost_life_1.mp3";
+import gainLife from "src/assets/sounds/lost_life_1.mp3";
 import useSound from "use-sound";
 
-interface FakeMeteoriteProps {
+interface ShieldMeteoriteProps {
+  life: number;
   setLife: any;
   isGameStarted: boolean;
   isClickGamePaused: boolean;
 }
 
-const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
+const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
+  life,
   setLife,
   isGameStarted,
   isClickGamePaused,
   ...props
-}: FakeMeteoriteProps) => {
+}: ShieldMeteoriteProps) => {
   const getRandomPosition = (): [number, number, number] => [
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
@@ -28,62 +29,73 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   const [meshPosition, setMeshPosition] = useState<[number, number, number]>(
     () => getRandomPosition()
   );
+  const [onHover, setOnHover] = useState<boolean>(false);
   const [isHide, setIsHide] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
-  const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
+  const [playGainLifeSound] = useSound(gainLife, { volume: 0.5 });
 
   const handleMeteoriteClick = () => {
-    if (isClickGamePaused) return;
-    setLife((prevLife: any) => prevLife - 1);
-    playLostLifeSound();
+    if (isClickGamePaused || life === 5) return;
+    setLife((prevLife: any) => prevLife + 1);
+    playGainLifeSound();
     setScale(0);
     setIsHide(true);
   };
 
   useFrame(() => {
-    if (isClickGamePaused) return;
+    if (isClickGamePaused || life === 5) return;
 
     if (!isGameStarted) {
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
       if (scale === 0) {
-        setMeshPosition(getRandomPosition());
+        setMeshPosition(getRandomPosition);
       }
       return;
     }
     ref.current.rotation.x += 0.04 * window.devicePixelRatio;
     ref.current.rotation.y += 0.04 * window.devicePixelRatio;
-    ref.current.position.z += (Math.random() / 5) * window.devicePixelRatio;
+    ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
     if (ref.current.position.z < -30) {
       setScale(0);
     }
 
-    if (ref.current.position.z > 4) {
+    if (ref.current.position.z > 4 || isHide) {
       setScale(0);
-      setMeshPosition(getRandomPosition());
+      setMeshPosition(getRandomPosition);
       setIsHide(false);
     }
 
     if (!isHide) {
-      if (scale === 0.25) return;
-
-      setScale((prevScale) =>
-        prevScale < 0.25 ? prevScale + 0.05 : prevScale - 0.05
-      );
+      if (onHover) {
+        setScale((prevScale) =>
+          prevScale > 2.0 ? prevScale : prevScale + 0.05
+        );
+      } else {
+        setScale((prevScale) =>
+          prevScale < 1.0 ? prevScale + 0.05 : prevScale - 0.05
+        );
+      }
     }
   });
 
   return (
-    <EarthModel
+    <mesh
       ref={ref}
       position={meshPosition}
       scale={scale}
+      castShadow
       onPointerUp={(e) => {
         e.stopPropagation();
         handleMeteoriteClick();
       }}
+      onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
+      onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
       {...props}
-    />
+    >
+      <icosahedronGeometry />
+      <meshStandardMaterial color="#08C4EC" />
+    </mesh>
   );
 };
 
-export default FakeMeteorite;
+export default ShieldMeteorite;
