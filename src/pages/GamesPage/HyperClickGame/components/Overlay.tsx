@@ -42,10 +42,34 @@ const Overlay: React.FC<OverlayProps> = ({
               {gameOver ? "Game Over" : "Hyper Click Game"}
             </h1>
           </div>
-          <div className="flex">
-            <div>Tutorial</div>
-            <div>Select Mode</div>
-            <div>Score board</div>
+          <div className="flex h-[480px] w-[960px] justify-between mb-10">
+            <div className="w-full flex justify-center">Tutorial</div>
+            <div className="w-full flex justify-center border-l border-r rounded border-[#307ADF]/40">
+              <div className="flex flex-col">
+                <span className="flex justify-center">Select Mode</span>
+                <div className="flex flex-col justify-center gap-10 h-full mb-10">
+                  <Button
+                    label={"Easy"}
+                    color="blue"
+                    type="outline"
+                    className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-green !border-green !bg-opacity-5"
+                  />
+                  <Button
+                    label={"Medium"}
+                    color="blue"
+                    type="outline"
+                    className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-orange !border-orange !bg-opacity-5"
+                  />
+                  <Button
+                    label={"Hard"}
+                    color="blue"
+                    type="outline"
+                    className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-pink !border-pink !bg-opacity-5"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className=" w-full flex justify-center">Score board</div>
           </div>
           <Button
             label={gameOver ? "Play Again" : "Start"}

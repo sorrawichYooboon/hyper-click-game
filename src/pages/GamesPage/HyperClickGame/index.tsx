@@ -64,7 +64,8 @@ const HyperClickGame: React.FC = () => {
   };
 
   const handleKeyDown = (event: any) => {
-    if (event.code === "Space") {
+    console.log(event.code);
+    if (event.code === "ControlLeft") {
       debouncedHandlePauseGame();
     }
   };
@@ -168,7 +169,7 @@ const HyperClickGame: React.FC = () => {
                 isGameStarted ? "!opacity-100" : "!opacity-0"
               }`}
             >
-              SPACE BAR
+              (Left Ctrl)
             </div>
           </div>
           <Button
