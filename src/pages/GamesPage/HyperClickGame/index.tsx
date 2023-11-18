@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaShieldHeart } from "react-icons/fa6";
 import Button from "src/components/Button";
 import { Canvas } from "@react-three/fiber";
+import { debounce } from "src/utils/time";
 import Stars from "src/pages/GamesPage/HyperClickGame/components/Stars";
 import Overlay from "src/pages/GamesPage/HyperClickGame/components/Overlay";
 import Camera from "src/pages/GamesPage/HyperClickGame/components/Camera";
@@ -19,7 +20,7 @@ const HyperClickGame: React.FC = () => {
   const [score, setScore] = useState<number>(0);
   const [life, setLife] = useState<number>(5);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
-  const [isClickGamePaused, setIsClickGamePaused] = useState<boolean>(false);
+  const [isGamePaused, setIsGamePaused] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [abstractSoundVolumn, setAbstractSoundVolumn] = useState<number>(0.3);
   const [
@@ -39,7 +40,7 @@ const HyperClickGame: React.FC = () => {
   const handleGameStart = () => {
     if (isGameStarted) return;
     playAbstractSound();
-    setIsClickGamePaused(false);
+    setIsGamePaused(false);
     playGameStartClickSound();
     setLife(5);
     setIsGameStarted(true);
@@ -50,8 +51,9 @@ const HyperClickGame: React.FC = () => {
   };
 
   const handlePauseGame = () => {
-    setIsClickGamePaused((prevIsClickGamePaused) => !prevIsClickGamePaused);
+    setIsGamePaused((prevIsGamePaused) => !prevIsGamePaused);
   };
+  const debouncedHandlePauseGame = debounce(handlePauseGame, 100);
 
   const handleMuteSound = () => {
     if (abstractSoundVolumn === 0) {
@@ -63,7 +65,7 @@ const HyperClickGame: React.FC = () => {
 
   const handleKeyDown = (event: any) => {
     if (event.code === "Space") {
-      handlePauseGame();
+      debouncedHandlePauseGame();
     }
   };
 
@@ -75,15 +77,15 @@ const HyperClickGame: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log(isClickGamePaused);
-    if (!isClickGamePaused) {
+    console.log(isGamePaused);
+    if (!isGamePaused) {
       playAbstractSound();
       playPowerUpSound();
     } else {
       pauseAbstractSound();
       playPowerDownSound();
     }
-  }, [isClickGamePaused]);
+  }, [isGamePaused]);
 
   useEffect(() => {
     if (life === 0) {
@@ -151,7 +153,7 @@ const HyperClickGame: React.FC = () => {
         <div className="flex">
           <div className="flex flex-col justify-center items-center">
             <Button
-              label={isClickGamePaused ? "Resume" : "Pause"}
+              label={isGamePaused ? "Resume" : "Pause"}
               color="aqua"
               type="outline"
               className={`!opacity-0 !transition-all !duration-700 !z-20 w-[70px] h-[40px] text-[24px] !text-white !bg-blue !bg-opacity-5 ${
@@ -159,7 +161,7 @@ const HyperClickGame: React.FC = () => {
                   ? "!opacity-100"
                   : "!opacity-0 !pointer-events-none"
               }`}
-              onClick={() => handlePauseGame()}
+              onClick={() => debouncedHandlePauseGame()}
             />
             <div
               className={`text-aqua opacity-0 transition-all duration-700 z-20 select-none text-xs mt-1 ${
@@ -188,37 +190,37 @@ const HyperClickGame: React.FC = () => {
           setScore={setScore}
           setLife={setLife}
           isGameStarted={isGameStarted}
-          isClickGamePaused={isClickGamePaused}
+          isGamePaused={isGamePaused}
         />
         <Meteorite
           numberToClickGoal={2}
           setScore={setScore}
           setLife={setLife}
           isGameStarted={isGameStarted}
-          isClickGamePaused={isClickGamePaused}
+          isGamePaused={isGamePaused}
         />
         <Meteorite
           numberToClickGoal={3}
           setScore={setScore}
           setLife={setLife}
           isGameStarted={isGameStarted}
-          isClickGamePaused={isClickGamePaused}
+          isGamePaused={isGamePaused}
         />
         <FakeMeteorite
           setLife={setLife}
           isGameStarted={isGameStarted}
-          isClickGamePaused={isClickGamePaused}
+          isGamePaused={isGamePaused}
         />
         <FakeMeteorite
           setLife={setLife}
           isGameStarted={isGameStarted}
-          isClickGamePaused={isClickGamePaused}
+          isGamePaused={isGamePaused}
         />
         <ShieldMeteorite
           life={life}
           setLife={setLife}
           isGameStarted={isGameStarted}
-          isClickGamePaused={isClickGamePaused}
+          isGamePaused={isGamePaused}
         />
       </Canvas>
     </div>

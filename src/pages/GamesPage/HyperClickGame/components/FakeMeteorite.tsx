@@ -9,13 +9,13 @@ import useSound from "use-sound";
 interface FakeMeteoriteProps {
   setLife: any;
   isGameStarted: boolean;
-  isClickGamePaused: boolean;
+  isGamePaused: boolean;
 }
 
 const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   setLife,
   isGameStarted,
-  isClickGamePaused,
+  isGamePaused,
   ...props
 }: FakeMeteoriteProps) => {
   const getRandomPosition = (): [number, number, number] => [
@@ -33,7 +33,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
 
   const handleMeteoriteClick = () => {
-    if (isClickGamePaused) return;
+    if (isGamePaused) return;
     setLife((prevLife: any) => prevLife - 1);
     playLostLifeSound();
     setScale(0);
@@ -41,7 +41,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   };
 
   useFrame(() => {
-    if (isClickGamePaused) return;
+    if (isGamePaused) return;
 
     if (!isGameStarted) {
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));

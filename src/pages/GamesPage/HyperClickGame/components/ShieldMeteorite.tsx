@@ -1,22 +1,25 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { randomPositionOrNegativeNumber } from "src/utils/calculations";
-import gainLife from "src/assets/sounds/lost_life_1.mp3";
+import {
+  randomPositionOrNegativeNumber,
+  randomNumberRange,
+} from "src/utils/calculations";
+import gainLife from "src/assets/sounds/gain_life_1.mp3";
 import useSound from "use-sound";
 
 interface ShieldMeteoriteProps {
   life: number;
   setLife: any;
   isGameStarted: boolean;
-  isClickGamePaused: boolean;
+  isGamePaused: boolean;
 }
 
 const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
   life,
   setLife,
   isGameStarted,
-  isClickGamePaused,
+  isGamePaused,
   ...props
 }: ShieldMeteoriteProps) => {
   const getRandomPosition = (): [number, number, number] => [
@@ -30,20 +33,32 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     () => getRandomPosition()
   );
   const [onHover, setOnHover] = useState<boolean>(false);
+  const [lastGenerateTime, setLastGenerateTime] = useState<number>(0);
+  const [isFirstLowerFive, setIsFirstLowerFive] = useState<boolean>(false);
   const [isHide, setIsHide] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
-  const [playGainLifeSound] = useSound(gainLife, { volume: 0.5 });
+  const [playGainLifeSound] = useSound(gainLife, { volume: 2 });
 
   const handleMeteoriteClick = () => {
-    if (isClickGamePaused || life === 5) return;
+    if (isGamePaused || life === 5) return;
     setLife((prevLife: any) => prevLife + 1);
     playGainLifeSound();
     setScale(0);
-    setIsHide(true);
+    setMeshPosition(getRandomPosition);
+    setLastGenerateTime(Date.now());
   };
 
+  useEffect(() => {
+    if (life < 5) {
+      setLastGenerateTime(Date.now());
+      setIsFirstLowerFive(true);
+    } else {
+      setIsFirstLowerFive(false);
+    }
+  }, [life]);
+
   useFrame(() => {
-    if (isClickGamePaused || life === 5) return;
+    if (isGamePaused || life === 5) return;
 
     if (!isGameStarted) {
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
@@ -52,6 +67,14 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
       }
       return;
     }
+
+    if (!isFirstLowerFive) return;
+
+    const currentTime = Date.now();
+    const regenerateDelay = randomNumberRange(5, 10) * 1000;
+
+    if (currentTime - lastGenerateTime < regenerateDelay) return;
+
     ref.current.rotation.x += 0.04 * window.devicePixelRatio;
     ref.current.rotation.y += 0.04 * window.devicePixelRatio;
     ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
@@ -60,6 +83,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     }
 
     if (ref.current.position.z > 4 || isHide) {
+      setLastGenerateTime(Date.now());
       setScale(0);
       setMeshPosition(getRandomPosition);
       setIsHide(false);
@@ -68,11 +92,11 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     if (!isHide) {
       if (onHover) {
         setScale((prevScale) =>
-          prevScale > 2.0 ? prevScale : prevScale + 0.05
+          prevScale > 1.0 ? prevScale : prevScale + 0.05
         );
       } else {
         setScale((prevScale) =>
-          prevScale < 1.0 ? prevScale + 0.05 : prevScale - 0.05
+          prevScale < 0.6 ? prevScale + 0.05 : prevScale - 0.05
         );
       }
     }

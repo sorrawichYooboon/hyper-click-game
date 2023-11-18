@@ -13,7 +13,7 @@ interface MeteoriteProps {
   setScore: any;
   setLife: any;
   isGameStarted: boolean;
-  isClickGamePaused: boolean;
+  isGamePaused: boolean;
 }
 
 const mappingNumberColor = (number: number) => {
@@ -38,7 +38,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   setScore,
   setLife,
   isGameStarted,
-  isClickGamePaused,
+  isGamePaused,
 }: MeteoriteProps) => {
   const getRandomPosition = (): [number, number, number] => [
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
@@ -65,7 +65,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
 
   const handleMeteoriteClick = () => {
-    if (isClickGamePaused) return;
+    if (isGamePaused) return;
     setMeshColor("#F1EFF4");
     setMeshColorText("#000000");
     setScale(2.7);
@@ -80,7 +80,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   };
 
   useFrame(() => {
-    if (isClickGamePaused) return;
+    if (isGamePaused) return;
     if (!isGameStarted) {
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
       if (scale === 0) {
