@@ -220,7 +220,7 @@ const Overlay: React.FC<OverlayProps> = ({
             </div>
             <div className="w-full flex justify-center border-l border-r rounded border-[#307ADF]/40">
               <div className="flex flex-col">
-                <div className="flex justify-center">Select Mode</div>
+                <div className="flex justify-center">Select Mode : Easy</div>
                 <div className="flex flex-col mt-4 gap-10 h-full mb-10">
                   <Button
                     label={"Very Easy"}
@@ -260,6 +260,7 @@ const Overlay: React.FC<OverlayProps> = ({
           />
         </div>
       </div>
+      {/* <div className="fixed text-white bottom-0 right-0 mb-4 mr-4">Sound Credit</div> */}
     </div>
   );
 };
