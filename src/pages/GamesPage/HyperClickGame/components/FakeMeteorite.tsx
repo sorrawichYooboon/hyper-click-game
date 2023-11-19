@@ -2,7 +2,7 @@ import { useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
-import EarthModel from "src/components/Models/Earth";
+import { Text } from "@react-three/drei";
 import lostLife from "src/assets/sounds/lost_life_1.mp3";
 import useSound from "use-sound";
 
@@ -52,7 +52,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
     }
     ref.current.rotation.x += 0.04 * window.devicePixelRatio;
     ref.current.rotation.y += 0.04 * window.devicePixelRatio;
-    ref.current.position.z += (Math.random() / 5) * window.devicePixelRatio;
+    ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
     if (ref.current.position.z < -30) {
       setScale(0);
     }
@@ -64,16 +64,29 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
     }
 
     if (!isHide) {
-      if (scale === 0.25) return;
+      if (scale === 0.7) return;
 
       setScale((prevScale) =>
-        prevScale < 0.25 ? prevScale + 0.05 : prevScale - 0.05
+        prevScale < 0.7 ? prevScale + 0.05 : prevScale - 0.05
       );
+    } else {
+      setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
     }
   });
 
+  const textsPosition = [
+    { position: [0.3, 0.5, 0.25], rotation: [2.31, -0.6, -0.57] },
+    { position: [-0.3, 0.5, 0.25], rotation: [2.31, 0.6, 0.57] },
+    { position: [0.3, -0.5, 0.25], rotation: [-2.31, -0.6, 0.57] },
+    { position: [0.3, 0.5, -0.25], rotation: [-2.31, 0.6, -0.57] },
+    { position: [-0.3, 0.5, -0.25], rotation: [-2.31, -0.6, 0.57] },
+    { position: [0.3, -0.5, -0.25], rotation: [2.31, 0.6, 0.57] },
+    { position: [-0.3, -0.5, 0.25], rotation: [-2.31, 0.6, -0.57] },
+    { position: [-0.3, -0.5, -0.25], rotation: [2.31, -0.6, -0.57] },
+  ];
+
   return (
-    <EarthModel
+    <mesh
       ref={ref}
       position={meshPosition}
       scale={scale}
@@ -82,7 +95,20 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
         handleMeteoriteClick();
       }}
       {...props}
-    />
+    >
+      <octahedronGeometry />
+      <meshPhysicalMaterial color="#AE2035" />
+      {textsPosition.map((text, index) => (
+        <Text
+          key={index}
+          position={text.position as [number, number, number]}
+          fontSize={0.4}
+          rotation={text.rotation as [number, number, number]}
+        >
+          X
+        </Text>
+      ))}
+    </mesh>
   );
 };
 

@@ -75,7 +75,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     if (!isFirstLowerFive) return;
 
     const currentTime = Date.now();
-    const regenerateDelay = 1000;
+    const regenerateDelay = randomNumberRange(5, 10) * 1000;
 
     if (currentTime - lastGenerateTime < regenerateDelay) return;
     ref.current.rotation.x += 0.04 * window.devicePixelRatio;
@@ -131,7 +131,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
       {...props}
     >
       <icosahedronGeometry />
-      <meshStandardMaterial color="#08C4EC" />
+      <meshNormalMaterial />
       {textsPosition.map((text, index) => (
         <Text
           key={index}
