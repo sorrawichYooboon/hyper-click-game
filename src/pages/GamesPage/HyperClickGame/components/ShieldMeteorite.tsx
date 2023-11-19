@@ -5,6 +5,7 @@ import {
   randomPositionOrNegativeNumber,
   randomNumberRange,
 } from "src/utils/calculations";
+import { Text } from "@react-three/drei";
 import gainLife from "src/assets/sounds/gain_life_1.mp3";
 import useSound from "use-sound";
 
@@ -50,7 +51,9 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
 
   useEffect(() => {
     if (life < 5) {
-      setLastGenerateTime(Date.now());
+      if (lastGenerateTime === 0) {
+        setLastGenerateTime(Date.now());
+      }
       setIsFirstLowerFive(true);
     } else {
       setIsFirstLowerFive(false);
@@ -72,10 +75,9 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     if (!isFirstLowerFive) return;
 
     const currentTime = Date.now();
-    const regenerateDelay = randomNumberRange(5, 10) * 1000;
+    const regenerateDelay = 1000;
 
     if (currentTime - lastGenerateTime < regenerateDelay) return;
-
     ref.current.rotation.x += 0.04 * window.devicePixelRatio;
     ref.current.rotation.y += 0.04 * window.devicePixelRatio;
     ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
@@ -103,6 +105,17 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     }
   });
 
+  const textsPosition = [
+    { position: [0.48, 0.45, 0.47], rotation: [-0.72, 0.6, 0.95] },
+    { position: [-0.48, 0.45, 0.47], rotation: [2.4, -2.6, 2.2] },
+    { position: [0.5, -0.45, 0.45], rotation: [0.8, 0.7, 2.2] },
+    { position: [0.42, 0.5, -0.48], rotation: [0.82, 2.45, 2.25] },
+    { position: [-0.48, -0.45, 0.47], rotation: [-2.4, -2.45, 0.85] },
+    { position: [-0.48, -0.45, -0.47], rotation: [-0.72, -2.45, 2.15] },
+    { position: [0.48, -0.45, -0.47], rotation: [2.4, -2.6, 2.2] },
+    { position: [-0.48, 0.45, -0.47], rotation: [-2.4, 2.6, 2.2] },
+  ];
+
   return (
     <mesh
       ref={ref}
@@ -119,6 +132,16 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     >
       <icosahedronGeometry />
       <meshStandardMaterial color="#08C4EC" />
+      {textsPosition.map((text, index) => (
+        <Text
+          key={index}
+          position={text.position as [number, number, number]}
+          fontSize={0.4}
+          rotation={text.rotation as [number, number, number]}
+        >
+          S
+        </Text>
+      ))}
     </mesh>
   );
 };

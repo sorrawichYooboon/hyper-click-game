@@ -64,7 +64,6 @@ const HyperClickGame: React.FC = () => {
   };
 
   const handleKeyDown = (event: any) => {
-    console.log(event.code);
     if (event.code === "ControlLeft") {
       debouncedHandlePauseGame();
     }
@@ -78,7 +77,6 @@ const HyperClickGame: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log(isGamePaused);
     if (!isGamePaused) {
       playAbstractSound();
       playPowerUpSound();
