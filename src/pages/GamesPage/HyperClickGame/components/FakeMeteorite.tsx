@@ -1,4 +1,4 @@
-import { useFrame } from "@react-three/fiber";
+import { ThreeEvent, useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
@@ -28,6 +28,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   const [meshPosition, setMeshPosition] = useState<[number, number, number]>(
     () => getRandomPosition()
   );
+  const [onHover, setOnHover] = useState<boolean>(false);
   const [isHide, setIsHide] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
@@ -50,6 +51,11 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
       }
       return;
     }
+
+    if (isHide) {
+      setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
+    }
+
     ref.current.rotation.x += 0.04 * window.devicePixelRatio;
     ref.current.rotation.y += 0.04 * window.devicePixelRatio;
     ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
@@ -64,13 +70,15 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
     }
 
     if (!isHide) {
-      if (scale === 0.7) return;
-
-      setScale((prevScale) =>
-        prevScale < 0.7 ? prevScale + 0.05 : prevScale - 0.05
-      );
-    } else {
-      setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
+      if (onHover) {
+        setScale((prevScale) =>
+          prevScale > 1.1 ? prevScale : prevScale + 0.05
+        );
+      } else {
+        setScale((prevScale) =>
+          prevScale < 0.7 ? prevScale + 0.05 : prevScale - 0.05
+        );
+      }
     }
   });
 
@@ -94,6 +102,8 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
         e.stopPropagation();
         handleMeteoriteClick();
       }}
+      onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
+      onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
       {...props}
     >
       <octahedronGeometry />

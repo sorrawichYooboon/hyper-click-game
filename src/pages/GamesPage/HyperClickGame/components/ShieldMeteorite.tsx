@@ -43,6 +43,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
   const handleMeteoriteClick = () => {
     if (isGamePaused || life === 5) return;
     setLife((prevLife: any) => prevLife + 1);
+    setIsHide(true);
     playGainLifeSound();
     setScale(0);
     setMeshPosition(getRandomPosition);
@@ -70,6 +71,10 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
         setIsFirstLowerFive(false);
       }
       return;
+    }
+
+    if (isHide) {
+      setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
     }
 
     if (!isFirstLowerFive) return;

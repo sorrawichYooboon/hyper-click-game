@@ -17,6 +17,7 @@ import ShieldMeteorite from "src/pages/GamesPage/HyperClickGame/components/Shiel
 import useSound from "use-sound";
 
 const HyperClickGame: React.FC = () => {
+  const [prevScore, setPrevScore] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   const [life, setLife] = useState<number>(5);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
@@ -51,6 +52,10 @@ const HyperClickGame: React.FC = () => {
   };
 
   const handlePauseGame = () => {
+    if (!isGameStarted) {
+      setIsGamePaused(false);
+      return;
+    }
     setIsGamePaused((prevIsGamePaused) => !prevIsGamePaused);
   };
   const debouncedHandlePauseGame = debounce(handlePauseGame, 100);
@@ -96,8 +101,13 @@ const HyperClickGame: React.FC = () => {
   }, [life]);
 
   useEffect(() => {
-    if (score % 5 === 0 && score !== 0) {
-      playLowComboSound();
+    if (score !== 0) {
+      for (let i = prevScore + 1; i <= score; i++) {
+        if (i % 5 === 0) {
+          playLowComboSound();
+        }
+      }
+      setPrevScore(score);
     }
   }, [score]);
 

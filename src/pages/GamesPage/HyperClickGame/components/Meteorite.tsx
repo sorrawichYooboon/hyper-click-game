@@ -56,6 +56,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const [mestColorText, setMeshColorText] = useState<string>("#F1EFF4");
   const [mestText, setMeshText] = useState<number>(numberToClickGoal);
   const [clickCount, setClickCount] = useState<number>(0);
+  const [isAlreadyAddedScore, setIsAlreadyAddedScore] =
+    useState<boolean>(false);
   const [onHover, setOnHover] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
   const [playMeteoriteClickSound] = useSound(meteoriteClickSound, {
@@ -66,6 +68,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
 
   const handleMeteoriteClick = () => {
     if (isGamePaused) return;
+
     setMeshColor("#F1EFF4");
     setMeshColorText("#000000");
     setScale(2.7);
@@ -101,9 +104,11 @@ const Meteorite: React.FC<MeteoriteProps> = ({
         playLostLifeSound();
       }
 
-      if (clickCount >= numberToClickGoal) {
-        setScore((prevScore: any) => prevScore + 1);
+      if (clickCount >= numberToClickGoal && !isAlreadyAddedScore) {
+        setIsAlreadyAddedScore(true);
+        setScore((prevScore: any) => prevScore + numberToClickGoal);
         playGetScoreSound();
+        setIsAlreadyAddedScore(false);
       }
 
       setScale(0);
