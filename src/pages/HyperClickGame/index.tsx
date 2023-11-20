@@ -94,7 +94,7 @@ const HyperClickGame: React.FC = () => {
   }, [isGamePaused]);
 
   useEffect(() => {
-    if (life === 0) {
+    if (life <= 0) {
       setIsGameStarted(false);
       setIsGameOver(true);
       stopAbstractSound();
@@ -179,7 +179,7 @@ const HyperClickGame: React.FC = () => {
         <div className="flex items-center">
           <span>LIFE:</span>
           <div className="ml-2 flex">
-            {Array.from(Array(life).keys()).map((_, index) => (
+            {Array.from(Array(life < 0 ? 0 : life).keys()).map((_, index) => (
               <FaShieldHeart key={index} className="text-aqua text-3xl ml-1" />
             ))}
           </div>

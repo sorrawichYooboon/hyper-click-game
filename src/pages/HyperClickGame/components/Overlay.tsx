@@ -223,8 +223,9 @@ const Overlay: React.FC<OverlayProps> = ({
                   </span>
                 </div>
                 <div className="flex flex-col mt-4 gap-10 h-full mb-10">
-                  {gameModes.map(({ label, color, mode }) => (
+                  {gameModes.map(({ label, color, mode }, index) => (
                     <Button
+                      key={index}
                       label={label}
                       color="blue"
                       type="outline"
