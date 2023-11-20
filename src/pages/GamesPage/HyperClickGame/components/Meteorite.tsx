@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { Text } from "@react-three/drei";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
-import meteoriteClickSound from "src/assets/sounds/lost_life_2.mp3";
+import meteoriteClickSound from "src/assets/sounds/click_1.mp3";
 import getScore from "src/assets/sounds/get_score_1.mp3";
 import lostLife from "src/assets/sounds/lost_life_1.mp3";
 import useSound from "use-sound";
@@ -61,7 +61,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const [onHover, setOnHover] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
   const [playMeteoriteClickSound] = useSound(meteoriteClickSound, {
-    volume: 0.5,
+    volume: 1,
   });
   const [playGetScoreSound] = useSound(getScore, { volume: 0.3 });
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });

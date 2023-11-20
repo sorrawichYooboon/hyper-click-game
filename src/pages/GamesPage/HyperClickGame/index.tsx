@@ -14,6 +14,7 @@ import powerDown from "src/assets/sounds/power_down_1.mp3";
 import Meteorite from "src/pages/GamesPage/HyperClickGame/components/Meteorite";
 import FakeMeteorite from "src/pages/GamesPage/HyperClickGame/components/FakeMeteorite";
 import ShieldMeteorite from "src/pages/GamesPage/HyperClickGame/components/ShieldMeteorite";
+import { GAME_MODE } from "src/constants/games";
 import useSound from "use-sound";
 
 const HyperClickGame: React.FC = () => {
@@ -23,6 +24,7 @@ const HyperClickGame: React.FC = () => {
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isGamePaused, setIsGamePaused] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [gameMode, setGameMode] = useState<string>(GAME_MODE.EASY);
   const [abstractSoundVolumn, setAbstractSoundVolumn] = useState<number>(0.3);
   const [
     playAbstractSound,
@@ -117,6 +119,8 @@ const HyperClickGame: React.FC = () => {
         handleGameStart={handleGameStart}
         gameStart={isGameStarted}
         gameOver={isGameOver}
+        gameMode={gameMode}
+        setGameMode={setGameMode}
       />
       {score > 0 && (
         <div className="animate-pulse z-10 text-white select-none absolute right-[25%] top-[20%] w-[200px] h-[100px]">
@@ -194,27 +198,121 @@ const HyperClickGame: React.FC = () => {
         <rectAreaLight width={10} height={10} position={[0, 0, 5]} castShadow />
         <Camera isGameStarted={isGameStarted} />
         <ambientLight intensity={0.5} />
-        <Meteorite
-          numberToClickGoal={1}
-          setScore={setScore}
-          setLife={setLife}
-          isGameStarted={isGameStarted}
-          isGamePaused={isGamePaused}
-        />
-        <Meteorite
-          numberToClickGoal={2}
-          setScore={setScore}
-          setLife={setLife}
-          isGameStarted={isGameStarted}
-          isGamePaused={isGamePaused}
-        />
-        <Meteorite
-          numberToClickGoal={3}
-          setScore={setScore}
-          setLife={setLife}
-          isGameStarted={isGameStarted}
-          isGamePaused={isGamePaused}
-        />
+        {gameMode === GAME_MODE.EASY && (
+          <>
+            <Meteorite
+              numberToClickGoal={1}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={2}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+          </>
+        )}
+        {gameMode === GAME_MODE.MEDIUM && (
+          <>
+            <Meteorite
+              numberToClickGoal={1}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={2}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={3}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+          </>
+        )}
+        {gameMode === GAME_MODE.HARD && (
+          <>
+            <Meteorite
+              numberToClickGoal={1}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={2}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={3}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={4}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+          </>
+        )}
+        {gameMode === GAME_MODE.HELL && (
+          <>
+            <Meteorite
+              numberToClickGoal={1}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={2}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={3}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={4}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+            <Meteorite
+              numberToClickGoal={5}
+              setScore={setScore}
+              setLife={setLife}
+              isGameStarted={isGameStarted}
+              isGamePaused={isGamePaused}
+            />
+          </>
+        )}
+
         <FakeMeteorite
           setLife={setLife}
           isGameStarted={isGameStarted}

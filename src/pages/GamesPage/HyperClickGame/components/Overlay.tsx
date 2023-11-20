@@ -1,21 +1,33 @@
+import { memo } from "react";
 import { Canvas, useFrame, ThreeEvent } from "@react-three/fiber";
 import { useEffect, useState, useRef } from "react";
 import { Text } from "@react-three/drei";
 import * as THREE from "three";
 import Button from "src/components/Button";
+import BoxModel from "src/components/Models/BoxModel";
+import clickSound from "src/assets/sounds/click_1.mp3";
+import { GAME_MODE } from "src/constants/games";
+import useSound from "use-sound";
 
 interface OverlayProps {
   handleGameStart: () => void;
+  gameMode: string;
+  setGameMode: (mode: string) => void;
   gameStart: boolean;
   gameOver: boolean;
 }
 
 const Overlay: React.FC<OverlayProps> = ({
   handleGameStart,
+  gameMode,
+  setGameMode,
   gameStart,
   gameOver,
 }) => {
   const [fadeIn, setFadeIn] = useState<boolean>(false);
+  const [playClickSound] = useSound(clickSound, {
+    volume: 1,
+  });
 
   useEffect(() => {
     if (gameStart) {
@@ -36,33 +48,18 @@ const Overlay: React.FC<OverlayProps> = ({
       scoreMeshRef.current.rotation.y += 0.015 * window.devicePixelRatio;
     });
 
-    const textsPosition = [
-      { position: [0, -0.05, 0.26], rotation: [0, 0, 0] },
-      { position: [0, -0.05, -0.26], rotation: [0, 3.13, 0] },
-      { position: [0, 0.26, -0.05], rotation: [1.58, 3.13, 0] },
-      { position: [0, -0.26, 0.05], rotation: [-1.58, 3.13, 0] },
-      { position: [-0.26, -0.05, 0], rotation: [0, -1.58, 0] },
-      { position: [0.26, -0.05, 0], rotation: [0, 1.58, 0] },
-    ];
-
     return (
-      <mesh ref={scoreMeshRef} position={[0, 0, 0]} scale={5}>
-        <boxGeometry args={[0.5, 0.5, 0.5]} />
-        <meshPhysicalMaterial color="#08C4EC" />
-        {textsPosition.map((text, index) => (
-          <Text
-            key={index}
-            position={text.position as [number, number, number]}
-            fontSize={0.4}
-            rotation={text.rotation as [number, number, number]}
-            color={"#F1EFF4"}
-          >
-            2
-          </Text>
-        ))}
-      </mesh>
+      <BoxModel
+        ref={scoreMeshRef}
+        position={[0, 0, 0]}
+        scale={5}
+        meshColor="#08C4EC"
+        meshText="2"
+      />
     );
   };
+
+  const MemoScoreBox = memo(ScoreBox);
 
   const LostLifeBox = () => {
     const lostScoreMeshRef = useRef<THREE.Mesh>(null!);
@@ -138,6 +135,11 @@ const Overlay: React.FC<OverlayProps> = ({
     );
   };
 
+  const handleGameMode = (mode: string) => {
+    playClickSound();
+    setGameMode(mode);
+  };
+
   return (
     <div
       className={`opacity-0 transition-all duration-700 ${
@@ -174,7 +176,7 @@ const Overlay: React.FC<OverlayProps> = ({
                           castShadow
                         />
                         <ambientLight intensity={0.5} />
-                        <ScoreBox />
+                        <MemoScoreBox />
                       </Canvas>
                     </div>
                     <div className="w-full h-full flex items-center mt-[-12px]">
@@ -220,31 +222,79 @@ const Overlay: React.FC<OverlayProps> = ({
             </div>
             <div className="w-full flex justify-center border-l border-r rounded border-[#307ADF]/40">
               <div className="flex flex-col">
-                <div className="flex justify-center">Select Mode : Easy</div>
+                <div className="flex justify-center">
+                  Select Mode :{" "}
+                  <span
+                    className={`${
+                      gameMode === GAME_MODE.EASY
+                        ? "text-green"
+                        : gameMode === GAME_MODE.MEDIUM
+                        ? "text-blue"
+                        : gameMode === GAME_MODE.HARD
+                        ? "text-orange"
+                        : gameMode === GAME_MODE.HELL
+                        ? "text-pink"
+                        : "text-pink"
+                    }`}
+                  >
+                    &nbsp;{gameMode}
+                  </span>
+                </div>
                 <div className="flex flex-col mt-4 gap-10 h-full mb-10">
-                  <Button
-                    label={"Very Easy"}
-                    color="blue"
-                    type="outline"
-                    className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-green !border-green !bg-opacity-5"
-                  />
                   <Button
                     label={"Easy"}
                     color="blue"
                     type="outline"
-                    className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-blue !border-blue !bg-opacity-5"
+                    onClick={() => handleGameMode(GAME_MODE.EASY)}
+                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-green ${
+                      gameMode === GAME_MODE.EASY
+                        ? "!border-green !bg-opacity-50 !text-white"
+                        : "!border-green !bg-opacity-5 !text-white"
+                    }`}
                   />
                   <Button
                     label={"Medium"}
                     color="blue"
                     type="outline"
-                    className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-orange !border-orange !bg-opacity-5"
+                    onClick={() => handleGameMode(GAME_MODE.MEDIUM)}
+                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-blue ${
+                      gameMode === GAME_MODE.MEDIUM
+                        ? "!border-blue !bg-opacity-50 !text-white"
+                        : "!border-blue !bg-opacity-5 !text-white"
+                    }`}
                   />
                   <Button
                     label={"Hard"}
                     color="blue"
                     type="outline"
-                    className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-pink !border-pink !bg-opacity-5"
+                    onClick={() => handleGameMode(GAME_MODE.HARD)}
+                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-orange ${
+                      gameMode === GAME_MODE.HARD
+                        ? "!border-orange !bg-opacity-50 !text-white"
+                        : "!border-orange !bg-opacity-5 !text-white"
+                    }`}
+                  />
+                  <Button
+                    label={"Hell"}
+                    color="blue"
+                    type="outline"
+                    onClick={() => handleGameMode(GAME_MODE.HELL)}
+                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-pink ${
+                      gameMode === GAME_MODE.HELL
+                        ? "!border-pink !bg-opacity-50 !text-white"
+                        : "!border-pink !bg-opacity-5 !text-white"
+                    }`}
+                  />
+                  <Button
+                    label={"Dynamic"}
+                    color="blue"
+                    type="outline"
+                    onClick={() => handleGameMode(GAME_MODE.DYNAMIC)}
+                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-pink ${
+                      gameMode === GAME_MODE.DYNAMIC
+                        ? "!border-pink !bg-opacity-50 !text-white"
+                        : "!border-pink !bg-opacity-5 !text-white"
+                    }`}
                   />
                 </div>
               </div>
