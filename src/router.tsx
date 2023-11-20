@@ -17,10 +17,10 @@ export default function Router() {
   return (
     <>
       <Routes>
-        <Route path="*" element={<Navigate to="/hyper-click-game" />} />
+        <Route path="*" element={<Navigate to="/" />} />
         {/* <Route path="/loading" element={<LoadingPage />} /> */}
         {/* <Route path="/" element={<GamesPage />} /> */}
-        <Route path="/hyper-click-game" element={<HyperClickGame />} />
+        <Route path="/" element={<HyperClickGame />} />
       </Routes>
     </>
   );
