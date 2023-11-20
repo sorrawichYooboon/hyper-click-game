@@ -1,11 +1,11 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
+import IcosahedronModel from "src/components/Models/IcosahedronModel";
 import * as THREE from "three";
 import {
   randomPositionOrNegativeNumber,
   randomNumberRange,
 } from "src/utils/calculations";
-import { Text } from "@react-three/drei";
 import gainLife from "src/assets/sounds/gain_life_1.mp3";
 import useSound from "use-sound";
 
@@ -110,44 +110,20 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     }
   });
 
-  const textsPosition = [
-    { position: [0.48, 0.45, 0.47], rotation: [-0.72, 0.6, 0.95] },
-    { position: [-0.48, 0.45, 0.47], rotation: [2.4, -2.6, 2.2] },
-    { position: [0.5, -0.45, 0.45], rotation: [0.8, 0.7, 2.2] },
-    { position: [0.42, 0.5, -0.48], rotation: [0.82, 2.45, 2.25] },
-    { position: [-0.48, -0.45, 0.47], rotation: [-2.4, -2.45, 0.85] },
-    { position: [-0.48, -0.45, -0.47], rotation: [-0.72, -2.45, 2.15] },
-    { position: [0.48, -0.45, -0.47], rotation: [2.4, -2.6, 2.2] },
-    { position: [-0.48, 0.45, -0.47], rotation: [-2.4, 2.6, 2.2] },
-  ];
-
   return (
-    <mesh
+    <IcosahedronModel
       ref={ref}
       position={meshPosition}
       scale={scale}
-      castShadow
       onPointerUp={(e) => {
         e.stopPropagation();
         handleMeteoriteClick();
       }}
       onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
       onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
+      meshText="S"
       {...props}
-    >
-      <icosahedronGeometry />
-      <meshNormalMaterial />
-      {textsPosition.map((text, index) => (
-        <Text
-          key={index}
-          position={text.position as [number, number, number]}
-          fontSize={0.4}
-          rotation={text.rotation as [number, number, number]}
-        >
-          S
-        </Text>
-      ))}
-    </mesh>
+    />
   );
 };
 

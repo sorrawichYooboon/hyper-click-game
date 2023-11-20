@@ -5,6 +5,8 @@ import { Text } from "@react-three/drei";
 import * as THREE from "three";
 import Button from "src/components/Button";
 import BoxModel from "src/components/Models/BoxModel";
+import OctahedronModel from "src/components/Models/OctahedronModel";
+import IcosahedronModel from "src/components/Models/IcosahedronModel";
 import clickSound from "src/assets/sounds/click_1.mp3";
 import { GAME_MODE } from "src/constants/games";
 import useSound from "use-sound";
@@ -69,32 +71,14 @@ const Overlay: React.FC<OverlayProps> = ({
       lostScoreMeshRef.current.rotation.y += 0.015 * window.devicePixelRatio;
     });
 
-    const textsPosition = [
-      { position: [0.3, 0.5, 0.25], rotation: [2.31, -0.6, -0.57] },
-      { position: [-0.3, 0.5, 0.25], rotation: [2.31, 0.6, 0.57] },
-      { position: [0.3, -0.5, 0.25], rotation: [-2.31, -0.6, 0.57] },
-      { position: [0.3, 0.5, -0.25], rotation: [-2.31, 0.6, -0.57] },
-      { position: [-0.3, 0.5, -0.25], rotation: [-2.31, -0.6, 0.57] },
-      { position: [0.3, -0.5, -0.25], rotation: [2.31, 0.6, 0.57] },
-      { position: [-0.3, -0.5, 0.25], rotation: [-2.31, 0.6, -0.57] },
-      { position: [-0.3, -0.5, -0.25], rotation: [2.31, -0.6, -0.57] },
-    ];
-
     return (
-      <mesh ref={lostScoreMeshRef} position={[0, 0, 0]} scale={2.3}>
-        <octahedronGeometry />
-        <meshPhysicalMaterial color="#AE2035" />
-        {textsPosition.map((text, index) => (
-          <Text
-            key={index}
-            position={text.position as [number, number, number]}
-            fontSize={0.4}
-            rotation={text.rotation as [number, number, number]}
-          >
-            X
-          </Text>
-        ))}
-      </mesh>
+      <OctahedronModel
+        ref={lostScoreMeshRef}
+        position={[0, 0, 0]}
+        scale={2.3}
+        meshColor="#AE2035"
+        meshText="X"
+      />
     );
   };
 
@@ -106,32 +90,13 @@ const Overlay: React.FC<OverlayProps> = ({
       gainLifeMeshRef.current.rotation.y += 0.015 * window.devicePixelRatio;
     });
 
-    const textsPosition = [
-      { position: [0.48, 0.45, 0.47], rotation: [-0.72, 0.6, 0.95] },
-      { position: [-0.48, 0.45, 0.47], rotation: [2.4, -2.6, 2.2] },
-      { position: [0.5, -0.45, 0.45], rotation: [0.8, 0.7, 2.2] },
-      { position: [0.42, 0.5, -0.48], rotation: [0.82, 2.45, 2.25] },
-      { position: [-0.48, -0.45, 0.47], rotation: [-2.4, -2.45, 0.85] },
-      { position: [-0.48, -0.45, -0.47], rotation: [-0.72, -2.45, 2.15] },
-      { position: [0.48, -0.45, -0.47], rotation: [2.4, -2.6, 2.2] },
-      { position: [-0.48, 0.45, -0.47], rotation: [-2.4, 2.6, 2.2] },
-    ];
-
     return (
-      <mesh ref={gainLifeMeshRef} position={[0, 0, 0]} scale={2} castShadow>
-        <icosahedronGeometry />
-        <meshNormalMaterial />
-        {textsPosition.map((text, index) => (
-          <Text
-            key={index}
-            position={text.position as [number, number, number]}
-            fontSize={0.4}
-            rotation={text.rotation as [number, number, number]}
-          >
-            S
-          </Text>
-        ))}
-      </mesh>
+      <IcosahedronModel
+        ref={gainLifeMeshRef}
+        position={[0, 0, 0]}
+        scale={2}
+        meshText="S"
+      />
     );
   };
 
@@ -139,6 +104,13 @@ const Overlay: React.FC<OverlayProps> = ({
     playClickSound();
     setGameMode(mode);
   };
+
+  const gameModes = [
+    { label: "Easy", color: "green", mode: GAME_MODE.EASY },
+    { label: "Medium", color: "blue", mode: GAME_MODE.MEDIUM },
+    { label: "Hard", color: "orange", mode: GAME_MODE.HARD },
+    { label: "Hell", color: "pink", mode: GAME_MODE.HELL },
+  ];
 
   return (
     <div
@@ -241,61 +213,19 @@ const Overlay: React.FC<OverlayProps> = ({
                   </span>
                 </div>
                 <div className="flex flex-col mt-4 gap-10 h-full mb-10">
-                  <Button
-                    label={"Easy"}
-                    color="blue"
-                    type="outline"
-                    onClick={() => handleGameMode(GAME_MODE.EASY)}
-                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-green ${
-                      gameMode === GAME_MODE.EASY
-                        ? "!border-green !bg-opacity-50 !text-white"
-                        : "!border-green !bg-opacity-5 !text-white"
-                    }`}
-                  />
-                  <Button
-                    label={"Medium"}
-                    color="blue"
-                    type="outline"
-                    onClick={() => handleGameMode(GAME_MODE.MEDIUM)}
-                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-blue ${
-                      gameMode === GAME_MODE.MEDIUM
-                        ? "!border-blue !bg-opacity-50 !text-white"
-                        : "!border-blue !bg-opacity-5 !text-white"
-                    }`}
-                  />
-                  <Button
-                    label={"Hard"}
-                    color="blue"
-                    type="outline"
-                    onClick={() => handleGameMode(GAME_MODE.HARD)}
-                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-orange ${
-                      gameMode === GAME_MODE.HARD
-                        ? "!border-orange !bg-opacity-50 !text-white"
-                        : "!border-orange !bg-opacity-5 !text-white"
-                    }`}
-                  />
-                  <Button
-                    label={"Hell"}
-                    color="blue"
-                    type="outline"
-                    onClick={() => handleGameMode(GAME_MODE.HELL)}
-                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-pink ${
-                      gameMode === GAME_MODE.HELL
-                        ? "!border-pink !bg-opacity-50 !text-white"
-                        : "!border-pink !bg-opacity-5 !text-white"
-                    }`}
-                  />
-                  <Button
-                    label={"Dynamic"}
-                    color="blue"
-                    type="outline"
-                    onClick={() => handleGameMode(GAME_MODE.DYNAMIC)}
-                    className={`z-20 w-[200px] h-[50px] text-[24px] !bg-pink ${
-                      gameMode === GAME_MODE.DYNAMIC
-                        ? "!border-pink !bg-opacity-50 !text-white"
-                        : "!border-pink !bg-opacity-5 !text-white"
-                    }`}
-                  />
+                  {gameModes.map(({ label, color, mode }) => (
+                    <Button
+                      label={label}
+                      color="blue"
+                      type="outline"
+                      onClick={() => handleGameMode(mode)}
+                      className={`z-20 w-[200px] h-[50px] text-[24px] !bg-${color} ${
+                        gameMode === mode
+                          ? `!border-${color} !bg-opacity-50 !text-white`
+                          : `!border-${color} !bg-opacity-5 !text-white`
+                      }`}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -310,7 +240,6 @@ const Overlay: React.FC<OverlayProps> = ({
           />
         </div>
       </div>
-      {/* <div className="fixed text-white bottom-0 right-0 mb-4 mr-4">Sound Credit</div> */}
     </div>
   );
 };

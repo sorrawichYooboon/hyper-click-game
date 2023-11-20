@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import { ThreeEvent } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 
-interface BoxModelProps {
+interface OctahedronModelProps {
   position?: [number, number, number];
   scale?: number;
   onPointerUp?: (event: ThreeEvent<PointerEvent>) => void;
@@ -10,12 +10,12 @@ interface BoxModelProps {
   onPointerOut?: (event: ThreeEvent<PointerEvent>) => void;
   meshSize?: [number, number, number];
   meshColor?: string;
-  meshText?: string | number;
+  meshText?: any;
   meshTextSize?: number;
   meshTextColor?: string;
 }
 
-const BoxModel = forwardRef<any, BoxModelProps>(
+const OctahedronModel = forwardRef<any, OctahedronModelProps>(
   (
     {
       position = [0, 0, 0],
@@ -33,12 +33,14 @@ const BoxModel = forwardRef<any, BoxModelProps>(
     ref
   ) => {
     const textsPosition = [
-      { position: [0, -0.05, 0.26], rotation: [0, 0, 0] },
-      { position: [0, -0.05, -0.26], rotation: [0, 3.13, 0] },
-      { position: [0, 0.26, -0.05], rotation: [1.58, 3.13, 0] },
-      { position: [0, -0.26, 0.05], rotation: [-1.58, 3.13, 0] },
-      { position: [-0.26, -0.05, 0], rotation: [0, -1.58, 0] },
-      { position: [0.26, -0.05, 0], rotation: [0, 1.58, 0] },
+      { position: [0.3, 0.5, 0.25], rotation: [2.31, -0.6, -0.57] },
+      { position: [-0.3, 0.5, 0.25], rotation: [2.31, 0.6, 0.57] },
+      { position: [0.3, -0.5, 0.25], rotation: [-2.31, -0.6, 0.57] },
+      { position: [0.3, 0.5, -0.25], rotation: [-2.31, 0.6, -0.57] },
+      { position: [-0.3, 0.5, -0.25], rotation: [-2.31, -0.6, 0.57] },
+      { position: [0.3, -0.5, -0.25], rotation: [2.31, 0.6, 0.57] },
+      { position: [-0.3, -0.5, 0.25], rotation: [-2.31, 0.6, -0.57] },
+      { position: [-0.3, -0.5, -0.25], rotation: [2.31, -0.6, -0.57] },
     ];
 
     return (
@@ -51,7 +53,7 @@ const BoxModel = forwardRef<any, BoxModelProps>(
         onPointerOut={onPointerOut}
         {...props}
       >
-        <boxGeometry args={meshSize} />
+        <octahedronGeometry />
         <meshPhysicalMaterial color={meshColor} />
         {textsPosition.map((text, index) => (
           <Text
@@ -69,4 +71,4 @@ const BoxModel = forwardRef<any, BoxModelProps>(
   }
 );
 
-export default BoxModel;
+export default OctahedronModel;

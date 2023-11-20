@@ -1,8 +1,8 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
-import { Text } from "@react-three/drei";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
+import BoxModel from "src/components/Models/BoxModel";
 import meteoriteClickSound from "src/assets/sounds/click_1.mp3";
 import getScore from "src/assets/sounds/get_score_1.mp3";
 import lostLife from "src/assets/sounds/lost_life_1.mp3";
@@ -127,17 +127,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({
     }
   });
 
-  const textsPosition = [
-    { position: [0, -0.05, 0.26], rotation: [0, 0, 0] },
-    { position: [0, -0.05, -0.26], rotation: [0, 3.13, 0] },
-    { position: [0, 0.26, -0.05], rotation: [1.58, 3.13, 0] },
-    { position: [0, -0.26, 0.05], rotation: [-1.58, 3.13, 0] },
-    { position: [-0.26, -0.05, 0], rotation: [0, -1.58, 0] },
-    { position: [0.26, -0.05, 0], rotation: [0, 1.58, 0] },
-  ];
-
   return (
-    <mesh
+    <BoxModel
       ref={ref}
       position={meshPosition}
       scale={scale}
@@ -147,21 +138,12 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       }}
       onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
       onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
-    >
-      <boxGeometry args={[0.5, 0.5, 0.5]} />
-      <meshPhysicalMaterial color={meshColor} />
-      {textsPosition.map((text, index) => (
-        <Text
-          key={index}
-          position={text.position as [number, number, number]}
-          fontSize={0.4}
-          rotation={text.rotation as [number, number, number]}
-          color={mestColorText}
-        >
-          {mestText}
-        </Text>
-      ))}
-    </mesh>
+      meshSize={[0.5, 0.5, 0.5]}
+      meshColor={meshColor}
+      meshText={mestText}
+      meshTextSize={0.4}
+      meshTextColor={mestColorText}
+    />
   );
 };
 

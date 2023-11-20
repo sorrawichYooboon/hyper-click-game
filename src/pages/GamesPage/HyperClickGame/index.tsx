@@ -113,6 +113,29 @@ const HyperClickGame: React.FC = () => {
     }
   }, [score]);
 
+  const gameModeAttributes = {
+    [GAME_MODE.EASY]: {
+      meteoriteClickGoals: [1, 2],
+      fakeMeteoriteAmount: 1,
+      shieldMeteoriteAmount: 1,
+    },
+    [GAME_MODE.MEDIUM]: {
+      meteoriteClickGoals: [1, 2, 3],
+      fakeMeteoriteAmount: 2,
+      shieldMeteoriteAmount: 1,
+    },
+    [GAME_MODE.HARD]: {
+      meteoriteClickGoals: [1, 2, 3, 4],
+      fakeMeteoriteAmount: 3,
+      shieldMeteoriteAmount: 1,
+    },
+    [GAME_MODE.HELL]: {
+      meteoriteClickGoals: [1, 2, 3, 4, 5],
+      fakeMeteoriteAmount: 4,
+      shieldMeteoriteAmount: 1,
+    },
+  };
+
   return (
     <div className="w-screen h-screen bg-black overflow-hidden">
       <Overlay
@@ -164,6 +187,28 @@ const HyperClickGame: React.FC = () => {
       </div>
       <div className="fixed right-0 mt-4 mr-4 z-10">
         <div className="flex">
+          <div
+            className={`!transition-all !duration-700 mr-2 mt-2 text-white ${
+              isGameStarted ? "!opacity-100" : "!opacity-0 !pointer-events-none"
+            }`}
+          >
+            Mode :&nbsp;
+            <span
+              className={`${
+                gameMode === GAME_MODE.EASY
+                  ? "text-green"
+                  : gameMode === GAME_MODE.MEDIUM
+                  ? "text-blue"
+                  : gameMode === GAME_MODE.HARD
+                  ? "text-orange"
+                  : gameMode === GAME_MODE.HELL
+                  ? "text-pink"
+                  : "text-pink"
+              }`}
+            >
+              {gameMode}
+            </span>
+          </div>
           <div className="flex flex-col justify-center items-center">
             <Button
               label={isGamePaused ? "Resume" : "Pause"}
@@ -198,137 +243,39 @@ const HyperClickGame: React.FC = () => {
         <rectAreaLight width={10} height={10} position={[0, 0, 5]} castShadow />
         <Camera isGameStarted={isGameStarted} />
         <ambientLight intensity={0.5} />
-        {gameMode === GAME_MODE.EASY && (
-          <>
+        {gameModeAttributes[gameMode].meteoriteClickGoals.map(
+          (numberToClickGoal, index) => (
             <Meteorite
-              numberToClickGoal={1}
+              key={index}
+              numberToClickGoal={numberToClickGoal}
               setScore={setScore}
               setLife={setLife}
               isGameStarted={isGameStarted}
               isGamePaused={isGamePaused}
             />
-            <Meteorite
-              numberToClickGoal={2}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-          </>
+          )
         )}
-        {gameMode === GAME_MODE.MEDIUM && (
-          <>
-            <Meteorite
-              numberToClickGoal={1}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={2}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={3}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-          </>
-        )}
-        {gameMode === GAME_MODE.HARD && (
-          <>
-            <Meteorite
-              numberToClickGoal={1}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={2}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={3}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={4}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-          </>
-        )}
-        {gameMode === GAME_MODE.HELL && (
-          <>
-            <Meteorite
-              numberToClickGoal={1}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={2}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={3}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={4}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-            <Meteorite
-              numberToClickGoal={5}
-              setScore={setScore}
-              setLife={setLife}
-              isGameStarted={isGameStarted}
-              isGamePaused={isGamePaused}
-            />
-          </>
-        )}
-
-        <FakeMeteorite
-          setLife={setLife}
-          isGameStarted={isGameStarted}
-          isGamePaused={isGamePaused}
-        />
-        <FakeMeteorite
-          setLife={setLife}
-          isGameStarted={isGameStarted}
-          isGamePaused={isGamePaused}
-        />
-        <ShieldMeteorite
-          life={life}
-          setLife={setLife}
-          isGameStarted={isGameStarted}
-          isGamePaused={isGamePaused}
-        />
+        {Array.from(
+          Array(gameModeAttributes[gameMode].fakeMeteoriteAmount).keys()
+        ).map((_, index) => (
+          <FakeMeteorite
+            key={index}
+            setLife={setLife}
+            isGameStarted={isGameStarted}
+            isGamePaused={isGamePaused}
+          />
+        ))}
+        {Array.from(
+          Array(gameModeAttributes[gameMode].shieldMeteoriteAmount).keys()
+        ).map((_, index) => (
+          <ShieldMeteorite
+            key={index}
+            life={life}
+            setLife={setLife}
+            isGameStarted={isGameStarted}
+            isGamePaused={isGamePaused}
+          />
+        ))}
       </Canvas>
     </div>
   );

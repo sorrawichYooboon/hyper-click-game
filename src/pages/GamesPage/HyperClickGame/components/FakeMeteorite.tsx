@@ -2,7 +2,7 @@ import { ThreeEvent, useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
-import { Text } from "@react-three/drei";
+import OctahedronModel from "src/components/Models/OctahedronModel";
 import lostLife from "src/assets/sounds/lost_life_1.mp3";
 import useSound from "use-sound";
 
@@ -82,19 +82,8 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
     }
   });
 
-  const textsPosition = [
-    { position: [0.3, 0.5, 0.25], rotation: [2.31, -0.6, -0.57] },
-    { position: [-0.3, 0.5, 0.25], rotation: [2.31, 0.6, 0.57] },
-    { position: [0.3, -0.5, 0.25], rotation: [-2.31, -0.6, 0.57] },
-    { position: [0.3, 0.5, -0.25], rotation: [-2.31, 0.6, -0.57] },
-    { position: [-0.3, 0.5, -0.25], rotation: [-2.31, -0.6, 0.57] },
-    { position: [0.3, -0.5, -0.25], rotation: [2.31, 0.6, 0.57] },
-    { position: [-0.3, -0.5, 0.25], rotation: [-2.31, 0.6, -0.57] },
-    { position: [-0.3, -0.5, -0.25], rotation: [2.31, -0.6, -0.57] },
-  ];
-
   return (
-    <mesh
+    <OctahedronModel
       ref={ref}
       position={meshPosition}
       scale={scale}
@@ -104,21 +93,10 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
       }}
       onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
       onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
+      meshColor="#AE2035"
+      meshText="X"
       {...props}
-    >
-      <octahedronGeometry />
-      <meshPhysicalMaterial color="#AE2035" />
-      {textsPosition.map((text, index) => (
-        <Text
-          key={index}
-          position={text.position as [number, number, number]}
-          fontSize={0.4}
-          rotation={text.rotation as [number, number, number]}
-        >
-          X
-        </Text>
-      ))}
-    </mesh>
+    />
   );
 };
 
