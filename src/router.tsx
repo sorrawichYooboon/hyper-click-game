@@ -9,23 +9,21 @@ const lazyLoad = (Component: any) => (props: any) =>
     </Suspense>
   );
 
-const GamesPage = lazyLoad(lazy(() => import("src/pages/GamesPage")));
-const HyperClickGame = lazyLoad(
-  lazy(() => import("src/pages/GamesPage/HyperClickGame"))
-);
+const GamesPage = lazyLoad(lazy(() => import("src/pages")));
+const HyperClickGame = lazyLoad(lazy(() => import("src/pages/HyperClickGame")));
 const HyperTypingGame = lazyLoad(
-  lazy(() => import("src/pages/GamesPage/HyperTypingGame"))
+  lazy(() => import("src/pages/HyperTypingGame"))
 );
 
 export default function Router() {
   return (
     <>
       <Routes>
-        <Route path="*" element={<Navigate to="/games/hyper-click" />} />
+        <Route path="*" element={<Navigate to="/hyper-click" />} />
         <Route path="/loading" element={<LoadingPage />} />
-        <Route path="/games" element={<GamesPage />} />
-        <Route path="/games/hyper-click" element={<HyperClickGame />} />
-        <Route path="/games/hyper-typing" element={<HyperTypingGame />} />
+        <Route path="/" element={<GamesPage />} />
+        <Route path="/hyper-click" element={<HyperClickGame />} />
+        <Route path="/hyper-typing" element={<HyperTypingGame />} />
       </Routes>
     </>
   );

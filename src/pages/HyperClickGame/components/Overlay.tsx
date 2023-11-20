@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Canvas, useFrame, ThreeEvent } from "@react-three/fiber";
 import { useEffect, useState, useRef } from "react";
 import { Text } from "@react-three/drei";
@@ -60,8 +59,6 @@ const Overlay: React.FC<OverlayProps> = ({
       />
     );
   };
-
-  const MemoScoreBox = memo(ScoreBox);
 
   const LostLifeBox = () => {
     const lostScoreMeshRef = useRef<THREE.Mesh>(null!);
@@ -162,7 +159,7 @@ const Overlay: React.FC<OverlayProps> = ({
                           castShadow
                         />
                         <ambientLight intensity={0.5} />
-                        <MemoScoreBox />
+                        <ScoreBox />
                       </Canvas>
                     </div>
                     <div className="w-full h-full flex items-center mt-[-12px]">
