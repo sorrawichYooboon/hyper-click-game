@@ -188,7 +188,7 @@ const HyperClickGame: React.FC = () => {
       <div className="fixed right-0 mt-4 mr-4 z-10">
         <div className="flex">
           <div
-            className={`!transition-all !duration-700 mr-2 mt-2 text-white ${
+            className={`!transition-all !duration-700 mr-4 mt-1 text-white select-none text-xl ${
               isGameStarted ? "!opacity-100" : "!opacity-0 !pointer-events-none"
             }`}
           >
