@@ -8,7 +8,6 @@ interface OctahedronModelProps {
   onPointerUp?: (event: ThreeEvent<PointerEvent>) => void;
   onPointerOver?: (event: ThreeEvent<PointerEvent>) => void;
   onPointerOut?: (event: ThreeEvent<PointerEvent>) => void;
-  meshSize?: [number, number, number];
   meshColor?: string;
   meshText?: any;
   meshTextSize?: number;
@@ -23,7 +22,6 @@ const OctahedronModel = forwardRef<any, OctahedronModelProps>(
       onPointerUp,
       onPointerOver,
       onPointerOut,
-      meshSize = [0.5, 0.5, 0.5],
       meshColor,
       meshText,
       meshTextSize = 0.4,

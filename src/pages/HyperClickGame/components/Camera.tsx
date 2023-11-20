@@ -5,7 +5,7 @@ interface CameraProps {
   isGameStarted: boolean;
 }
 
-const Camera: React.FC<CameraProps> = ({ isGameStarted }) => {
+const Camera: React.FC<CameraProps> = () => {
   return <OrbitControls enableZoom={false} enablePan={false} enabled={false} />;
 };
 

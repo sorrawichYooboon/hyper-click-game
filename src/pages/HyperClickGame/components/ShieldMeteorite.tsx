@@ -1,4 +1,4 @@
-import { ThreeEvent, useFrame } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import IcosahedronModel from "src/components/Models/IcosahedronModel";
 import * as THREE from "three";
@@ -119,8 +119,8 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
         e.stopPropagation();
         handleMeteoriteClick();
       }}
-      onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
-      onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
+      onPointerOver={() => setOnHover(true)}
+      onPointerOut={() => setOnHover(false)}
       meshText="S"
       {...props}
     />

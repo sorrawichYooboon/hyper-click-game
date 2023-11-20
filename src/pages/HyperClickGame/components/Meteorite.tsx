@@ -1,4 +1,4 @@
-import { ThreeEvent, useFrame } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
@@ -136,8 +136,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({
         e.stopPropagation();
         handleMeteoriteClick();
       }}
-      onPointerOver={(e: ThreeEvent<PointerEvent>) => setOnHover(true)}
-      onPointerOut={(e: ThreeEvent<PointerEvent>) => setOnHover(false)}
+      onPointerOver={() => setOnHover(true)}
+      onPointerOut={() => setOnHover(false)}
       meshSize={[0.5, 0.5, 0.5]}
       meshColor={meshColor}
       meshText={mestText}

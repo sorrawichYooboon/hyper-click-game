@@ -1,6 +1,5 @@
-import { Canvas, useFrame, ThreeEvent } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useState, useRef } from "react";
-import { Text } from "@react-three/drei";
 import * as THREE from "three";
 import Button from "src/components/Button";
 import BoxModel from "src/components/Models/BoxModel";
@@ -203,7 +202,7 @@ const Overlay: React.FC<OverlayProps> = ({
                 </div>
               </div>
             </div>
-            <div className="w-full flex justify-center border-l border-r rounded border-[#307ADF]/40">
+            <div className="w-full flex justify-center border-l rounded border-[#307ADF]/40">
               <div className="flex flex-col">
                 <div className="flex justify-center">
                   Select Mode :{" "}
@@ -240,7 +239,7 @@ const Overlay: React.FC<OverlayProps> = ({
                 </div>
               </div>
             </div>
-            <div className=" w-full flex justify-center">Score board</div>
+            {/* <div className=" w-full flex justify-center">Score board</div> */}
           </div>
           <Button
             label={gameOver ? "Play Again" : "Start"}

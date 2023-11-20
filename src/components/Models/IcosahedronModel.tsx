@@ -8,7 +8,6 @@ interface IcosahedronModelProps {
   onPointerUp?: (event: ThreeEvent<PointerEvent>) => void;
   onPointerOver?: (event: ThreeEvent<PointerEvent>) => void;
   onPointerOut?: (event: ThreeEvent<PointerEvent>) => void;
-  meshSize?: [number, number, number];
   meshText?: any;
   meshTextSize?: number;
   meshTextColor?: string;
@@ -22,7 +21,6 @@ const IcosahedronModel = forwardRef<any, IcosahedronModelProps>(
       onPointerUp,
       onPointerOver,
       onPointerOut,
-      meshSize = [0.5, 0.5, 0.5],
       meshText,
       meshTextSize = 0.4,
       meshTextColor = "#F1EFF4",

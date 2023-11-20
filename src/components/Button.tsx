@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button as MuiButton } from "@mui/material";
+import { Button as MuiButton } from "@mui/material";
 
 interface ButtonProps {
   color:
