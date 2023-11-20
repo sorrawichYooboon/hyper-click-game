@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 
