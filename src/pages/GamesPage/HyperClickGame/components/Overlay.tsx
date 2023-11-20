@@ -134,8 +134,22 @@ const Overlay: React.FC<OverlayProps> = ({
               <div>Tutorial</div>
               <div className="mt-4 w-full h-[calc(100%-112px)]">
                 <div>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio
-                  asperiores cum rem! Maiores mollitia fuga dolores! Eius libero
+                  <span className="text-xs">
+                    1. Click the score box to{" "}
+                    <span className="text-green">score points</span> based on
+                    the displayed number and click count.
+                  </span>
+                  <br />
+                  <span className="text-xs">
+                    2. Click the lost life box to{" "}
+                    <span className="text-orange">lose a life.</span> You have 5
+                    lives.
+                  </span>
+                  <br />
+                  <span className="text-xs">
+                    3. Click the <span className="text-blue">gain life</span>{" "}
+                    box to gain 1 life.
+                  </span>
                 </div>
                 <div className="flex flex-col h-full w-full mt-2">
                   <div className="flex w-full h-full">
