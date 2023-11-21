@@ -119,37 +119,38 @@ const Overlay: React.FC<OverlayProps> = ({
           gameStart && "opacity-0 z-0"
         }`}
       >
-        <div className="flex flex-col justify-center items-center">
-          <div className="mb-10">
-            <h1 className="text-[64px]">
+        <div className="ml-4 flex flex-col justify-center items-center mt-10">
+          <div className="mb-5 lg:mb-10">
+            <h1 className="font-bold text-3xl lg:text-[64px]">
               {gameOver ? "Game Over" : "Hyper Click Game"}
             </h1>
+            {/* <div>Previous Score : 0</div> */}
           </div>
-          <div className="flex h-[480px] w-[960px] justify-between mb-10">
-            <div className="w-full flex flex-col items-center">
-              <div>Tutorial</div>
-              <div className="mt-4 w-full h-[calc(100%-112px)]">
+          <div className="flex justify-between mb-5 lg:mb-10 lg:h-[480px] lg:w-[960px]">
+            <div className="w-full flex flex-col items-center text-xs px-2">
+              <div className="text-sm font-bold lg:text-xl">Tutorial</div>
+              <div className="mt-4 w-full lg:h-[calc(100%-112px)]">
                 <div>
-                  <span className="text-xs">
+                  <span className="text-xs lg:text-sm">
                     1. Click the score box to{" "}
                     <span className="text-green">score points</span> based on
                     the displayed number and click count.
                   </span>
                   <br />
-                  <span className="text-xs">
+                  <span className="text-xs lg:text-sm">
                     2. Click the lost life box to{" "}
                     <span className="text-orange">lose a life.</span> You have 5
                     lives.
                   </span>
                   <br />
-                  <span className="text-xs">
+                  <span className="text-xs lg:text-sm">
                     3. Click the <span className="text-blue">gain life</span>{" "}
                     box to gain 1 life.
                   </span>
                 </div>
-                <div className="flex flex-col h-full w-full mt-2">
-                  <div className="flex w-full h-full">
-                    <div className="w-[200px] h-[100px]">
+                <div className="flex flex-col h-full w-full mt-2 text-xs">
+                  <div className="flex lg:w-full lg:h-full">
+                    <div className="w-[100px] h-[50px] lg:w-[200px] lg:h-[100px]">
                       <Canvas>
                         <rectAreaLight
                           width={10}
@@ -161,12 +162,12 @@ const Overlay: React.FC<OverlayProps> = ({
                         <ScoreBox />
                       </Canvas>
                     </div>
-                    <div className="w-full h-full flex items-center mt-[-12px]">
+                    <div className="flex items-center mt-[-12px] lg:w-full lg:h-full">
                       Score Box
                     </div>
                   </div>
-                  <div className="flex w-full h-full">
-                    <div className="w-[200px] h-[100px]">
+                  <div className="flex lg:w-full lg:h-full">
+                    <div className="w-[100px] h-[50px] lg:w-[200px] lg:h-[100px]">
                       <Canvas>
                         <rectAreaLight
                           width={10}
@@ -178,12 +179,12 @@ const Overlay: React.FC<OverlayProps> = ({
                         <LostLifeBox />
                       </Canvas>
                     </div>
-                    <div className="w-full h-full flex items-center mt-[-12px]">
+                    <div className="lg:w-full lg:h-full flex items-center mt-[-12px]">
                       Lost Life Box
                     </div>
                   </div>
-                  <div className="flex w-full h-full">
-                    <div className="w-[200px] h-[100px]">
+                  <div className="flex lg:w-full lg:h-full">
+                    <div className="w-[100px] h-[50px] lg:w-[200px] lg:h-[100px]">
                       <Canvas>
                         <rectAreaLight
                           width={10}
@@ -195,16 +196,16 @@ const Overlay: React.FC<OverlayProps> = ({
                         <GainLifeBox />
                       </Canvas>
                     </div>
-                    <div className="w-full h-full flex items-center mt-[-12px]">
+                    <div className="flex items-center mt-[-12px] lg:w-full lg:h-full">
                       Gain Life Box
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="w-full flex justify-center border-l rounded border-[#307ADF]/40">
-              <div className="flex flex-col">
-                <div className="flex justify-center">
+            <div className="w-full flex justify-center border-l border-[#307ADF]/40 text-xs">
+              <div className="flex flex-col items-center">
+                <div className="flex justify-center text-sm font-bold">
                   Select Mode :{" "}
                   <span
                     className={`${
@@ -222,7 +223,7 @@ const Overlay: React.FC<OverlayProps> = ({
                     &nbsp;{gameMode}
                   </span>
                 </div>
-                <div className="flex flex-col mt-4 gap-10 h-full mb-10">
+                <div className="flex flex-col mt-4  h-full gap-6 lg:mb-10 lg:gap-10">
                   {gameModes.map(({ label, color, mode }, index) => (
                     <Button
                       key={index}
@@ -230,7 +231,7 @@ const Overlay: React.FC<OverlayProps> = ({
                       color="blue"
                       type="outline"
                       onClick={() => handleGameMode(mode)}
-                      className={`z-20 w-[200px] h-[50px] text-[24px] !bg-${color} ${
+                      className={`z-20 !bg-${color} w-[90px] h-[35px] !text-xs lg:w-[200px] lg:h-[50px] lg:text-[24px] ${
                         gameMode === mode
                           ? `!border-${color} !bg-opacity-50 !text-white`
                           : `!border-${color} !bg-opacity-5 !text-white`
@@ -240,13 +241,12 @@ const Overlay: React.FC<OverlayProps> = ({
                 </div>
               </div>
             </div>
-            {/* <div className=" w-full flex justify-center">Score board</div> */}
           </div>
           <Button
             label={gameOver ? "Play Again" : "Start"}
             color="blue"
             type="outline"
-            className="z-20 w-[200px] h-[50px] text-[24px] !text-white !bg-blue !bg-opacity-5"
+            className="z-20 w-[100px] h-[40px] !text-xs !text-white !bg-blue !bg-opacity-5 lg:w-[200px] lg:h-[50px]"
             onClick={() => handleGameStart()}
           />
         </div>
