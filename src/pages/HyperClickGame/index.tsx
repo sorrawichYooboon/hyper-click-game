@@ -116,22 +116,22 @@ const HyperClickGame: React.FC = () => {
   const gameModeAttributes = {
     [GAME_MODE.EASY]: {
       meteoriteClickGoals: [1, 2],
-      fakeMeteoriteAmount: 1,
+      fakeMeteoriteAmount: 4,
       shieldMeteoriteAmount: 1,
     },
     [GAME_MODE.MEDIUM]: {
       meteoriteClickGoals: [1, 2, 3],
-      fakeMeteoriteAmount: 2,
+      fakeMeteoriteAmount: 5,
       shieldMeteoriteAmount: 1,
     },
     [GAME_MODE.HARD]: {
       meteoriteClickGoals: [1, 2, 3, 4],
-      fakeMeteoriteAmount: 3,
+      fakeMeteoriteAmount: 6,
       shieldMeteoriteAmount: 1,
     },
     [GAME_MODE.HELL]: {
       meteoriteClickGoals: [1, 2, 3, 4, 5],
-      fakeMeteoriteAmount: 4,
+      fakeMeteoriteAmount: 7,
       shieldMeteoriteAmount: 1,
     },
   };

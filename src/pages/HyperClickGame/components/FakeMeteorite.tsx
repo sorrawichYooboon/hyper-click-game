@@ -72,11 +72,11 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
     if (!isHide) {
       if (onHover) {
         setScale((prevScale) =>
-          prevScale > 1.8 ? prevScale : prevScale + 0.05
+          prevScale > 0.4 ? prevScale : prevScale + 0.05
         );
       } else {
         setScale((prevScale) =>
-          prevScale < 1.4 ? prevScale + 0.05 : prevScale - 0.05
+          prevScale < 0.25 ? prevScale + 0.05 : prevScale - 0.05
         );
       }
     }
