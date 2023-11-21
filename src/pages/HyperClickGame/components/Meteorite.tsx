@@ -71,7 +71,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
 
     setMeshColor("#F1EFF4");
     setMeshColorText("#000000");
-    setScale(2.7);
+    setScale(3.5);
     setTimeout(() => {
       setMeshColor(mappingNumberColor(numberToClickGoal));
       setMeshColorText("#F1EFF4");
@@ -93,7 +93,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
     }
     ref.current.rotation.x += 0.04 * window.devicePixelRatio;
     ref.current.rotation.y += 0.04 * window.devicePixelRatio;
-    ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
+    ref.current.position.z += (Math.random() / 8) * window.devicePixelRatio;
     if (ref.current.position.z < -30) {
       setScale(0);
     }
@@ -119,10 +119,10 @@ const Meteorite: React.FC<MeteoriteProps> = ({
     }
 
     if (onHover) {
-      setScale((prevScale) => (prevScale > 2.5 ? prevScale : prevScale + 0.05));
+      setScale((prevScale) => (prevScale > 3.5 ? prevScale : prevScale + 0.05));
     } else {
       setScale((prevScale) =>
-        prevScale < 1.5 ? prevScale + 0.05 : prevScale - 0.05
+        prevScale < 2.5 ? prevScale + 0.05 : prevScale - 0.05
       );
     }
   });

@@ -85,7 +85,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     if (currentTime - lastGenerateTime < regenerateDelay) return;
     ref.current.rotation.x += 0.04 * window.devicePixelRatio;
     ref.current.rotation.y += 0.04 * window.devicePixelRatio;
-    ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
+    ref.current.position.z += (Math.random() / 8) * window.devicePixelRatio;
     if (ref.current.position.z < -30) {
       setScale(0);
     }
@@ -100,11 +100,11 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     if (!isHide) {
       if (onHover) {
         setScale((prevScale) =>
-          prevScale > 1.0 ? prevScale : prevScale + 0.05
+          prevScale > 1.7 ? prevScale : prevScale + 0.05
         );
       } else {
         setScale((prevScale) =>
-          prevScale < 0.6 ? prevScale + 0.05 : prevScale - 0.05
+          prevScale < 1.3 ? prevScale + 0.05 : prevScale - 0.05
         );
       }
     }
