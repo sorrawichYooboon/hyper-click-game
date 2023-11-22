@@ -91,8 +91,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       }
       return;
     }
-    ref.current.rotation.x += 0.04 * window.devicePixelRatio;
-    ref.current.rotation.y += 0.04 * window.devicePixelRatio;
+    ref.current.rotation.x += 0.02 * window.devicePixelRatio;
+    ref.current.rotation.y += 0.02 * window.devicePixelRatio;
     ref.current.position.z += (Math.random() / 8) * window.devicePixelRatio;
     if (ref.current.position.z < -30) {
       setScale(0);

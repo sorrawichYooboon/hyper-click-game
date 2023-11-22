@@ -159,7 +159,7 @@ const HyperClickGame: React.FC = () => {
         </div>
       )}
       <div
-        className={`opacity-0 transition-all duration-700 z-10 text-white select-none fixed bottom-0 mb-6 lg:mb-14 lg:text-xl w-full ${
+        className={`opacity-0 transition-all duration-700 z-10 text-white select-none fixed bottom-0 mb-6 w-full sm:mb-14 sm:text-2xl ${
           isGameStarted ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -167,7 +167,10 @@ const HyperClickGame: React.FC = () => {
           <span>LIFE:</span>
           <div className="ml-2 flex">
             {Array.from(Array(life < 0 ? 0 : life).keys()).map((_, index) => (
-              <FaShieldHeart key={index} className="text-aqua text-3xl ml-1" />
+              <FaShieldHeart
+                key={index}
+                className="text-aqua text-3xl sm:text-[42px] ml-1"
+              />
             ))}
           </div>
         </div>
@@ -175,7 +178,7 @@ const HyperClickGame: React.FC = () => {
       <div className="fixed z-10 w-full lg:right-0 lg:mt-4 lg:mr-4">
         <div className="flex w-full justify-center mt-2">
           <div
-            className={`!transition-all !duration-700 mr-4 mt-1 text-white select-none text-xl lg:text-xl ${
+            className={`!transition-all !duration-700 mr-4 mt-1 text-white select-none text-xl sm:text-2xl ${
               isGameStarted ? "!opacity-100" : "!opacity-0 !pointer-events-none"
             }`}
           >
@@ -201,7 +204,7 @@ const HyperClickGame: React.FC = () => {
               label={isGamePaused ? "Resume" : "Pause"}
               color="aqua"
               type="outline"
-              className={`!opacity-0 !transition-all !duration-700 !z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 lg:w-[120px] lg:h-[40px] lg:text-[24px] ${
+              className={`!opacity-0 !transition-all !duration-700 !z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 sm:!text-sm sm:w-[200px] sm:h-[50px] ${
                 isGameStarted
                   ? "!opacity-100"
                   : "!opacity-0 !pointer-events-none"
@@ -209,7 +212,7 @@ const HyperClickGame: React.FC = () => {
               onClick={() => debouncedHandlePauseGame()}
             />
             <div
-              className={`text-aqua opacity-0 transition-all duration-700 z-20 select-none text-xs mt-1 ${
+              className={`text-aqua opacity-0 transition-all duration-700 z-20 select-none text-xs mt-1 sm:text-sm ${
                 isGameStarted ? "!opacity-100" : "!opacity-0"
               }`}
             >
@@ -220,7 +223,7 @@ const HyperClickGame: React.FC = () => {
             label={abstractSoundVolumn === 0 ? "Unmute" : "Mute"}
             color="green"
             type="outline"
-            className={`z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 !ml-2 lg:w-[120px] lg:h-[40px] lg:text-[24px] ${
+            className={`z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 !ml-2 sm:!text-sm sm:w-[200px] sm:h-[50px] ${
               isGameStarted ? "" : "!fixed text-center"
             }`}
             onClick={() => handleMuteSound()}
