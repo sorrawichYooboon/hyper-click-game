@@ -1,4 +1,3 @@
-import React from "react";
 import ScriptTag from "react-script-tag";
 
 const GoogleAdSense = () => {
