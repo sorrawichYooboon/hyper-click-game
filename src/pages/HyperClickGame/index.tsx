@@ -17,6 +17,7 @@ import Meteorite from "src/pages/HyperClickGame/components/Meteorite";
 import FakeMeteorite from "src/pages/HyperClickGame/components/FakeMeteorite";
 import ShieldMeteorite from "src/pages/HyperClickGame/components/ShieldMeteorite";
 import { GAME_MODE } from "src/constants/games";
+import GoogleAdSense from "src/components/GoogleAdsense";
 import useSound from "use-sound";
 
 const HyperClickGame: React.FC = () => {
@@ -147,6 +148,7 @@ const HyperClickGame: React.FC = () => {
       <Helmet>
         <title>Hyper Click Game - Flowech</title>
       </Helmet>
+      <GoogleAdSense />
       <Overlay
         handleGameStart={handleGameStart}
         gameStart={isGameStarted}

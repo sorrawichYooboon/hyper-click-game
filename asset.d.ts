@@ -3,6 +3,8 @@ declare module "*.mp3" {
   export default value;
 }
 
+declare module "react-script-tag";
+
 declare module "*.gltf" {
   const value: any;
   export default value;
