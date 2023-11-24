@@ -1,7 +1,10 @@
 // import { Suspense, lazy } from "react";
+
 import { Routes, Route, Navigate } from "react-router-dom";
+import ReactGA from "react-ga";
 // import LoadingPage from "src/pages/LoadingPage";
 import HyperClickGame from "src/pages/HyperClickGame";
+import { useEffect } from "react";
 
 // const lazyLoad = (Component: any) => (props: any) =>
 //   (
@@ -14,6 +17,10 @@ import HyperClickGame from "src/pages/HyperClickGame";
 // const HyperClickGame = lazyLoad(lazy(() => import("src/pages/HyperClickGame")));
 
 export default function Router() {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  });
+
   return (
     <>
       <Routes>
