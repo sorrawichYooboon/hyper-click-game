@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { FaShieldHeart } from "react-icons/fa6";
 import Button from "src/components/Button";
 import { Canvas } from "@react-three/fiber";
@@ -143,6 +144,9 @@ const HyperClickGame: React.FC = () => {
 
   return (
     <div className="w-screen h-screen bg-black overflow-hidden">
+      <Helmet>
+        <title>Hyper Click Game - Flowech</title>
+      </Helmet>
       <Overlay
         handleGameStart={handleGameStart}
         gameStart={isGameStarted}
