@@ -8,6 +8,7 @@ import Overlay from "src/pages/HyperClickGame/components/Overlay";
 import Camera from "src/pages/HyperClickGame/components/Camera";
 import abstractSound from "src/assets/sounds/abstract_1.mp3";
 import gameStartClickSound from "src/assets/sounds/game_start_1.mp3";
+import clickSound from "src/assets/sounds/click_1.mp3";
 import lowCombo from "src/assets/sounds/combo_1.mp3";
 import powerUp from "src/assets/sounds/power_up_1.mp3";
 import powerDown from "src/assets/sounds/power_down_1.mp3";
@@ -36,6 +37,9 @@ const HyperClickGame: React.FC = () => {
   const [playGameStartClickSound] = useSound(gameStartClickSound, {
     volume: 0.4,
   });
+  const [playClickSound] = useSound(clickSound, {
+    volume: 1,
+  });
   const [playLowComboSound] = useSound(lowCombo, { volume: 1 });
   const [playPowerUpSound] = useSound(powerUp, { volume: 0.5 });
   const [playPowerDownSound] = useSound(powerDown, { volume: 1 });
@@ -63,6 +67,7 @@ const HyperClickGame: React.FC = () => {
   const debouncedHandlePauseGame = debounce(handlePauseGame, 100);
 
   const handleMuteSound = () => {
+    playClickSound();
     if (abstractSoundVolumn === 0) {
       setAbstractSoundVolumn(0.3);
     } else {
@@ -175,7 +180,7 @@ const HyperClickGame: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="fixed z-10 w-full lg:right-0 lg:mt-4 lg:mr-4">
+      <div className="fixed z-10 w-full lg:right-0 lg:mr-4">
         <div className="flex w-full justify-center mt-2">
           <div
             className={`!transition-all !duration-700 mr-4 mt-1 text-white select-none text-xl sm:text-2xl ${

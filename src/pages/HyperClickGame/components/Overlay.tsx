@@ -121,7 +121,7 @@ const Overlay: React.FC<OverlayProps> = ({
       >
         <div className="ml-4 flex flex-col justify-center items-center mt-10">
           <div className="mb-5 sm:mb-10">
-            <h1 className="font-bold text-3xl sm:text-[52px] lg:text-[64px]">
+            <h1 className="font-bold text-3xl sm:text-[52px]">
               {gameOver ? "Game Over" : "Hyper Click Game"}
             </h1>
             {/* <div>Previous Score : 0</div> */}
