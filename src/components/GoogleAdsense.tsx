@@ -5,6 +5,7 @@ const GoogleAdSense = () => {
     <ScriptTag
       type="text/javascript"
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3726402765892188"
+      crossorigin="anonymous"
     />
   );
 };
