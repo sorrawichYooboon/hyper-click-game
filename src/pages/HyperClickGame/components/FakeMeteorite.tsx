@@ -56,9 +56,9 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
     }
 
-    ref.current.rotation.x += 0.02 * window.devicePixelRatio;
-    ref.current.rotation.y += 0.02 * window.devicePixelRatio;
-    ref.current.position.z += (Math.random() / 6) * window.devicePixelRatio;
+    ref.current.rotation.x += 0.02 / window.devicePixelRatio;
+    ref.current.rotation.y += 0.02 / window.devicePixelRatio;
+    ref.current.position.z += Math.random() / 6 / window.devicePixelRatio;
     if (ref.current.position.z < -30) {
       setScale(0);
     }
