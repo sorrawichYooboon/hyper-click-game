@@ -125,22 +125,22 @@ const HyperClickGame: React.FC = () => {
   const gameModeAttributes = {
     [GAME_MODE.EASY]: {
       meteoriteClickGoals: [1, 2],
-      fakeMeteoriteAmount: 4,
+      fakeMeteoriteAmount: 5,
       shieldMeteoriteAmount: 1,
     },
     [GAME_MODE.MEDIUM]: {
       meteoriteClickGoals: [1, 2, 3],
-      fakeMeteoriteAmount: 5,
+      fakeMeteoriteAmount: 6,
       shieldMeteoriteAmount: 1,
     },
     [GAME_MODE.HARD]: {
       meteoriteClickGoals: [1, 2, 3, 4],
-      fakeMeteoriteAmount: 6,
+      fakeMeteoriteAmount: 7,
       shieldMeteoriteAmount: 1,
     },
     [GAME_MODE.HELL]: {
       meteoriteClickGoals: [1, 2, 3, 4, 5],
-      fakeMeteoriteAmount: 7,
+      fakeMeteoriteAmount: 8,
       shieldMeteoriteAmount: 1,
     },
   };
@@ -158,14 +158,12 @@ const HyperClickGame: React.FC = () => {
     }, 700);
   }, [isGameStarted, fadeIn]);
 
-  console.log(devicePixelRatio);
-
   const ScoreBox = () => {
     const scoreMeshRef = useRef<THREE.Mesh>(null!);
 
     useFrame(() => {
-      scoreMeshRef.current.rotation.x += 0.015 / window.devicePixelRatio;
-      scoreMeshRef.current.rotation.y += 0.015 / window.devicePixelRatio;
+      scoreMeshRef.current.rotation.x += 0.05 / window.devicePixelRatio;
+      scoreMeshRef.current.rotation.y += 0.05 / window.devicePixelRatio;
     });
 
     return (
@@ -183,8 +181,8 @@ const HyperClickGame: React.FC = () => {
     const lostScoreMeshRef = useRef<THREE.Mesh>(null!);
 
     useFrame(() => {
-      lostScoreMeshRef.current.rotation.x += 0.015 / window.devicePixelRatio;
-      lostScoreMeshRef.current.rotation.y += 0.015 / window.devicePixelRatio;
+      lostScoreMeshRef.current.rotation.x += 0.05 / window.devicePixelRatio;
+      lostScoreMeshRef.current.rotation.y += 0.05 / window.devicePixelRatio;
     });
 
     return (
@@ -202,8 +200,8 @@ const HyperClickGame: React.FC = () => {
     const gainLifeMeshRef = useRef<THREE.Mesh>(null!);
 
     useFrame(() => {
-      gainLifeMeshRef.current.rotation.x += 0.015 / window.devicePixelRatio;
-      gainLifeMeshRef.current.rotation.y += 0.015 / window.devicePixelRatio;
+      gainLifeMeshRef.current.rotation.x += 0.05 / window.devicePixelRatio;
+      gainLifeMeshRef.current.rotation.y += 0.05 / window.devicePixelRatio;
     });
 
     return (
