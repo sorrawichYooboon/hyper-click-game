@@ -299,7 +299,7 @@ const HyperClickGame: React.FC = () => {
               isGameStarted && "opacity-0"
             } ${fadeIn ? "opacity-100" : "opacity-0"}`}
           >
-            <div className="mb-2">
+            <div className="mb-5">
               <h1 className="font-bold text-3xl sm:text-[52px]">
                 {isGameStarted ? "Game Over" : "Hyper Click Game"}
               </h1>
