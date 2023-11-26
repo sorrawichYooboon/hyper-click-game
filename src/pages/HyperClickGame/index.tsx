@@ -299,12 +299,12 @@ const HyperClickGame: React.FC = () => {
               isGameStarted && "opacity-0"
             } ${fadeIn ? "opacity-100" : "opacity-0"}`}
           >
-            <div className="mb-5">
+            <div className="mb-2">
               <h1 className="font-bold text-3xl sm:text-[52px]">
                 {isGameStarted ? "Game Over" : "Hyper Click Game"}
               </h1>
             </div>
-            <div className="flex mb-5">
+            <div className="flex mb-3">
               <div className="w-full flex flex-col items-center text-xs px-2">
                 <div className="text-sm font-bold sm:text-xl">Tutorial</div>
                 <div className="mt-4 w-full lg:h-[calc(100%-112px)]">
@@ -494,7 +494,7 @@ const HyperClickGame: React.FC = () => {
         </div>
       )}
       <div
-        className={`opacity-0 transition-all duration-700 z-10 text-white select-none pointer-events-none fixed bottom-0 mb-6 w-full sm:mb-14 sm:text-2xl ${
+        className={`opacity-0 transition-all duration-700 z-10 text-white select-none pointer-events-none fixed bottom-0 mb-14 w-full sm:mb-14 sm:text-2xl ${
           isGameStarted ? "opacity-100" : "opacity-0"
         }`}
       >
