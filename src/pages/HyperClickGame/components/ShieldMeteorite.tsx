@@ -1,5 +1,6 @@
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
+import { debounce } from "src/utils/time";
 import IcosahedronModel from "src/components/Models/IcosahedronModel";
 import * as THREE from "three";
 import {
@@ -49,6 +50,8 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     setMeshPosition(getRandomPosition);
     setLastGenerateTime(Date.now());
   };
+
+  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
 
   useEffect(() => {
     if (life < 5) {
@@ -117,7 +120,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
       scale={scale}
       onPointerUp={(e) => {
         e.stopPropagation();
-        handleMeteoriteClick();
+        debouncedHandleMeteoriteClick();
       }}
       onPointerOver={() => setOnHover(true)}
       onPointerOut={() => setOnHover(false)}

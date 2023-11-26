@@ -1,6 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
+import { debounce } from "src/utils/time";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
 import OctahedronModel from "src/components/Models/OctahedronModel";
 import lostLife from "src/assets/sounds/lost_life_1.mp3";
@@ -40,6 +41,8 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
     setScale(0);
     setIsHide(true);
   };
+
+  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
 
   useFrame(() => {
     if (isGamePaused) return;
@@ -89,7 +92,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
       scale={scale}
       onPointerUp={(e) => {
         e.stopPropagation();
-        handleMeteoriteClick();
+        debouncedHandleMeteoriteClick();
       }}
       onPointerOver={() => setOnHover(true)}
       onPointerOut={() => setOnHover(false)}

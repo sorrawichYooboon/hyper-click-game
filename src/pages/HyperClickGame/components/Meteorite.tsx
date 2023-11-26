@@ -1,6 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import React, { useRef, useState } from "react";
 import * as THREE from "three";
+import { debounce } from "src/utils/time";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
 import BoxModel from "src/components/Models/BoxModel";
 import meteoriteClickSound from "src/assets/sounds/click_1.mp3";
@@ -82,6 +83,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({
     }
   };
 
+  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
+
   useFrame(() => {
     if (isGamePaused) return;
     if (!isGameStarted) {
@@ -134,7 +137,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       scale={scale}
       onPointerUp={(e) => {
         e.stopPropagation();
-        handleMeteoriteClick();
+        debouncedHandleMeteoriteClick();
       }}
       onPointerOver={() => setOnHover(true)}
       onPointerOut={() => setOnHover(false)}
