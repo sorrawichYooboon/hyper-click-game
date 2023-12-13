@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { FaShieldHeart } from "react-icons/fa6";
 import Button from "src/components/Button";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { debounce } from "src/utils/time";
 import Stars from "src/pages/HyperClickGame/components/Stars";
 import Camera from "src/pages/HyperClickGame/components/Camera";
@@ -198,10 +198,11 @@ const HyperClickGame: React.FC = () => {
 
   const GainLifeBox = () => {
     const gainLifeMeshRef = useRef<THREE.Mesh>(null!);
+    const rotationSpeed = 2;
 
-    useFrame(() => {
-      gainLifeMeshRef.current.rotation.x += 0.05 / window.devicePixelRatio;
-      gainLifeMeshRef.current.rotation.y += 0.05 / window.devicePixelRatio;
+    useFrame((_, delta) => {
+      gainLifeMeshRef.current.rotation.x += rotationSpeed * delta;
+      gainLifeMeshRef.current.rotation.y += rotationSpeed * delta;
     });
 
     return (
