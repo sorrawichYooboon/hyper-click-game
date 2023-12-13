@@ -33,6 +33,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   const [isHide, setIsHide] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
+  const moveSpeed = 10;
 
   const handleMeteoriteClick = () => {
     if (isGamePaused) return;
@@ -44,7 +45,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
 
   const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (isGamePaused) return;
 
     if (!isGameStarted) {
@@ -59,9 +60,9 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
     }
 
-    ref.current.rotation.x += 0.1 / window.devicePixelRatio;
-    ref.current.rotation.y += 0.1 / window.devicePixelRatio;
-    ref.current.position.z += Math.random() / 1 / window.devicePixelRatio;
+    ref.current.rotation.x += moveSpeed * delta * 0.3;
+    ref.current.rotation.y += moveSpeed * delta * 0.3;
+    ref.current.position.z += Math.random() * moveSpeed * delta * 1.2;
     if (ref.current.position.z < -30) {
       setScale(0);
     }

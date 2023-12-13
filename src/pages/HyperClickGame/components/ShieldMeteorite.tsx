@@ -27,7 +27,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
   const getRandomPosition = (): [number, number, number] => [
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-    -(Math.random() * 10 + 30),
+    -(Math.random() * 10 + 45),
   ];
 
   const ref = useRef<THREE.Mesh>(null!);
@@ -40,6 +40,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
   const [isHide, setIsHide] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
   const [playGainLifeSound] = useSound(gainLife, { volume: 2 });
+  const moveSpeed = 2.5;
 
   const handleMeteoriteClick = () => {
     if (isGamePaused || life === 5) return;
@@ -64,7 +65,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     }
   }, [life]);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (isGamePaused || life === 5) return;
 
     if (!isGameStarted) {
@@ -86,10 +87,10 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     const regenerateDelay = randomNumberRange(5, 10) * 1000;
 
     if (currentTime - lastGenerateTime < regenerateDelay) return;
-    ref.current.rotation.x += 0.05 / window.devicePixelRatio;
-    ref.current.rotation.y += 0.05 / window.devicePixelRatio;
-    ref.current.position.z += Math.random() / 2 / window.devicePixelRatio;
-    if (ref.current.position.z < -30) {
+    ref.current.rotation.x += moveSpeed * delta;
+    ref.current.rotation.y += moveSpeed * delta;
+    ref.current.position.z += Math.random() * moveSpeed * delta * 6;
+    if (ref.current.position.z < -45) {
       setScale(0);
     }
 

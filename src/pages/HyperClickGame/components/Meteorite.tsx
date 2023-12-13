@@ -44,7 +44,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const getRandomPosition = (): [number, number, number] => [
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
-    -(Math.random() * 10 + 30),
+    -(Math.random() * 10 + 45),
   ];
 
   const ref = useRef<THREE.Mesh>(null!);
@@ -66,6 +66,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   });
   const [playGetScoreSound] = useSound(getScore, { volume: 0.3 });
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
+  const moveSpeed = 2.5;
 
   const handleMeteoriteClick = () => {
     if (isGamePaused) return;
@@ -85,7 +86,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
 
   const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (isGamePaused) return;
     if (!isGameStarted) {
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
@@ -94,10 +95,10 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       }
       return;
     }
-    ref.current.rotation.x += 0.075 / window.devicePixelRatio;
-    ref.current.rotation.y += 0.075 / window.devicePixelRatio;
-    ref.current.position.z += Math.random() / 1.5 / window.devicePixelRatio;
-    if (ref.current.position.z < -30) {
+    ref.current.rotation.x += moveSpeed * delta;
+    ref.current.rotation.y += moveSpeed * delta;
+    ref.current.position.z += Math.random() * moveSpeed * delta * 6;
+    if (ref.current.position.z < -45) {
       setScale(0);
     }
 

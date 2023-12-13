@@ -5,6 +5,7 @@ import { useRef, memo } from "react";
 const Stars = (props: any) => {
   const ref = useRef<THREE.Mesh>(null!);
   const sphere = new Float32Array(1000 * 3);
+  const moveSpeed = 2.5;
   for (let i = 0; i < sphere.length; i += 3) {
     const radius = 4;
     const theta = Math.random() * Math.PI * 2;
@@ -18,8 +19,8 @@ const Stars = (props: any) => {
   }
 
   useFrame((_, delta) => {
-    ref.current.rotation.x += delta / 5 / window.devicePixelRatio;
-    ref.current.rotation.y += delta / 10 / window.devicePixelRatio;
+    ref.current.rotation.x += moveSpeed * delta * 0.05;
+    ref.current.rotation.y += moveSpeed * delta * 0.05;
   });
 
   return (
@@ -31,7 +32,7 @@ const Stars = (props: any) => {
         {...props}
         scale={3.5}
       >
-        <PointMaterial color="white" size={0.02} />
+        <PointMaterial color="white" size={0.04} />
       </Points>
     </group>
   );

@@ -47,6 +47,7 @@ const HyperClickGame: React.FC = () => {
   const [playLowComboSound] = useSound(lowCombo, { volume: 1 });
   const [playPowerUpSound] = useSound(powerUp, { volume: 0.5 });
   const [playPowerDownSound] = useSound(powerDown, { volume: 1 });
+  const rotationSpeed = 1.5;
 
   const handleGameStart = () => {
     if (isGameStarted) return;
@@ -161,9 +162,9 @@ const HyperClickGame: React.FC = () => {
   const ScoreBox = () => {
     const scoreMeshRef = useRef<THREE.Mesh>(null!);
 
-    useFrame(() => {
-      scoreMeshRef.current.rotation.x += 0.05 / window.devicePixelRatio;
-      scoreMeshRef.current.rotation.y += 0.05 / window.devicePixelRatio;
+    useFrame((_, delta) => {
+      scoreMeshRef.current.rotation.x += rotationSpeed * delta;
+      scoreMeshRef.current.rotation.y += rotationSpeed * delta;
     });
 
     return (
@@ -180,9 +181,9 @@ const HyperClickGame: React.FC = () => {
   const LostLifeBox = () => {
     const lostScoreMeshRef = useRef<THREE.Mesh>(null!);
 
-    useFrame(() => {
-      lostScoreMeshRef.current.rotation.x += 0.05 / window.devicePixelRatio;
-      lostScoreMeshRef.current.rotation.y += 0.05 / window.devicePixelRatio;
+    useFrame((_, delta) => {
+      lostScoreMeshRef.current.rotation.x += rotationSpeed * delta;
+      lostScoreMeshRef.current.rotation.y += rotationSpeed * delta;
     });
 
     return (
@@ -198,7 +199,6 @@ const HyperClickGame: React.FC = () => {
 
   const GainLifeBox = () => {
     const gainLifeMeshRef = useRef<THREE.Mesh>(null!);
-    const rotationSpeed = 2;
 
     useFrame((_, delta) => {
       gainLifeMeshRef.current.rotation.x += rotationSpeed * delta;
