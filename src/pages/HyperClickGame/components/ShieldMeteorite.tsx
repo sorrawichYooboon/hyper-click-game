@@ -15,6 +15,7 @@ interface ShieldMeteoriteProps {
   setLife: any;
   isGameStarted: boolean;
   isGamePaused: boolean;
+  level: number;
 }
 
 const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
@@ -22,6 +23,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
   setLife,
   isGameStarted,
   isGamePaused,
+  level,
   ...props
 }: ShieldMeteoriteProps) => {
   const getRandomPosition = (): [number, number, number] => [
@@ -87,9 +89,10 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     const regenerateDelay = randomNumberRange(5, 10) * 1000;
 
     if (currentTime - lastGenerateTime < regenerateDelay) return;
-    ref.current.rotation.x += moveSpeed * delta;
-    ref.current.rotation.y += moveSpeed * delta;
-    ref.current.position.z += Math.random() * moveSpeed * delta * 6;
+    let varySpeed = 1 + 2 * (level / 20);
+    ref.current.rotation.x += moveSpeed * delta * varySpeed;
+    ref.current.rotation.y += moveSpeed * delta * varySpeed;
+    ref.current.position.z += Math.random() * moveSpeed * delta * 6 * varySpeed;
     if (ref.current.position.z < -45) {
       setScale(0);
     }

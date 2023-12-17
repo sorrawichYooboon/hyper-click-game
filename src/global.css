@@ -12,3 +12,16 @@
 body {
   font-family: "Nunito", sans-serif;
 }
+
+@keyframes opacity-animation {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.7;
+  }
+}

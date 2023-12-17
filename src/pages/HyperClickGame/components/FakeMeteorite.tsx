@@ -11,12 +11,14 @@ interface FakeMeteoriteProps {
   setLife: any;
   isGameStarted: boolean;
   isGamePaused: boolean;
+  level: number;
 }
 
 const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   setLife,
   isGameStarted,
   isGamePaused,
+  level,
   ...props
 }: FakeMeteoriteProps) => {
   const getRandomPosition = (): [number, number, number] => [
@@ -60,9 +62,11 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
     }
 
-    ref.current.rotation.x += moveSpeed * delta * 0.3;
-    ref.current.rotation.y += moveSpeed * delta * 0.3;
-    ref.current.position.z += Math.random() * moveSpeed * delta * 1.2;
+    let varySpeed = 1 + 2 * (level / 20);
+    ref.current.rotation.x += moveSpeed * delta * 0.3 * varySpeed;
+    ref.current.rotation.y += moveSpeed * delta * 0.3 * varySpeed;
+    ref.current.position.z +=
+      Math.random() * moveSpeed * delta * 1.2 * varySpeed;
     if (ref.current.position.z < -30) {
       setScale(0);
     }

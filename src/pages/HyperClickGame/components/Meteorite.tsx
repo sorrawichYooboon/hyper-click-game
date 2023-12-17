@@ -15,6 +15,7 @@ interface MeteoriteProps {
   setLife: any;
   isGameStarted: boolean;
   isGamePaused: boolean;
+  level: number;
 }
 
 const mappingNumberColor = (number: number) => {
@@ -40,6 +41,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   setLife,
   isGameStarted,
   isGamePaused,
+  level,
 }: MeteoriteProps) => {
   const getRandomPosition = (): [number, number, number] => [
     (Math.random() * 10 * randomPositionOrNegativeNumber()) / 2,
@@ -95,9 +97,10 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       }
       return;
     }
-    ref.current.rotation.x += moveSpeed * delta;
-    ref.current.rotation.y += moveSpeed * delta;
-    ref.current.position.z += Math.random() * moveSpeed * delta * 6;
+    let varySpeed = 1 + 2 * (level / 20);
+    ref.current.rotation.x += moveSpeed * delta * varySpeed;
+    ref.current.rotation.y += moveSpeed * delta * varySpeed;
+    ref.current.position.z += Math.random() * moveSpeed * delta * 6 * varySpeed;
     if (ref.current.position.z < -45) {
       setScale(0);
     }

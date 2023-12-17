@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import "src/pages/HyperClickGame/index.css";
 import { Helmet } from "react-helmet";
 import { FaShieldHeart } from "react-icons/fa6";
 import Button from "src/components/Button";
@@ -8,6 +9,7 @@ import Stars from "src/pages/HyperClickGame/components/Stars";
 import Camera from "src/pages/HyperClickGame/components/Camera";
 import abstractSound from "src/assets/sounds/abstract_1.mp3";
 import gameStartClickSound from "src/assets/sounds/game_start_1.mp3";
+import levelUpSound from "src/assets/sounds/level_up_1.mp3";
 import clickSound from "src/assets/sounds/click_1.mp3";
 import lowCombo from "src/assets/sounds/combo_1.mp3";
 import powerUp from "src/assets/sounds/power_up_1.mp3";
@@ -28,6 +30,8 @@ const HyperClickGame: React.FC = () => {
   const [life, setLife] = useState<number>(5);
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
   const [isGamePaused, setIsGamePaused] = useState<boolean>(false);
+  const [level, setLevel] = useState<number>(1);
+  const [levelPulse, setLevelPulse] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [gameMode, setGameMode] = useState<string>(GAME_MODE.EASY);
   const [abstractSoundVolumn, setAbstractSoundVolumn] = useState<number>(0.3);
@@ -47,6 +51,7 @@ const HyperClickGame: React.FC = () => {
   const [playLowComboSound] = useSound(lowCombo, { volume: 1 });
   const [playPowerUpSound] = useSound(powerUp, { volume: 0.5 });
   const [playPowerDownSound] = useSound(powerDown, { volume: 1 });
+  const [playLevelUpSound] = useSound(levelUpSound, { volume: 3 });
   const rotationSpeed = 1.5;
 
   const handleGameStart = () => {
@@ -114,9 +119,16 @@ const HyperClickGame: React.FC = () => {
 
   useEffect(() => {
     if (score !== 0) {
-      for (let i = prevScore + 1; i <= score; i++) {
-        if (i % 5 === 0) {
+      setLevelPulse(false);
+      for (let currScore = prevScore + 1; currScore <= score; currScore++) {
+        if (currScore % 5 === 0) {
           playLowComboSound();
+        }
+
+        if (currScore % 50 === 0 && currScore !== 0 && level < 20) {
+          setLevelPulse(true);
+          playLevelUpSound();
+          setLevel((prevLevel) => prevLevel + 1);
         }
       }
       setPrevScore(score);
@@ -227,13 +239,47 @@ const HyperClickGame: React.FC = () => {
     { label: "Hell", color: "pink", mode: GAME_MODE.HELL },
   ];
 
+  const backGroundColor = (level: number) => {
+    switch (true) {
+      case level <= 4:
+        return "score-background bg-[#03D7AE]";
+      case level <= 8:
+        return "score-background bg-[#08C4EC]";
+      case level <= 12:
+        return "score-background bg-[#307ADF]";
+      case level <= 16:
+        return "score-background bg-[#F26546]";
+      default:
+        return "score-background bg-[#D436C5]";
+    }
+  };
+
+  // Cursor
+  const cursor = document.querySelector(".cursor");
+
+  // Attaching Event listner to follow cursor
+  document.addEventListener("mousemove", (e) => {
+    cursor!.setAttribute(
+      "style",
+      "top: " + (e.pageY - 25) + "px; left:" + (e.pageX - 25) + "px;"
+    );
+  });
+
+  // ON CLICK ADD/REMOVE CLASS ".expend"
+  document.addEventListener("click", () => {
+    cursor!.classList.add("expend");
+    setTimeout(() => {
+      cursor!.classList.remove("expend");
+    }, 500);
+  });
+
   return (
     <div className="h-screen w-screen bg-black">
       <Helmet>
         <title>Hyper Click Game - Flowech</title>
       </Helmet>
       <GoogleAdSense />
-
+      <div className="cursor"></div>
       <div
         className={`text-white w-full h-full flex flex-col transition-all duration-700 overflow-hidden`}
       >
@@ -294,7 +340,7 @@ const HyperClickGame: React.FC = () => {
             />
           </div>
         </div>
-        <div className="overflow-auto h-full w-full z-10 pb-2">
+        <div className="overflow-hidden h-full w-full z-10 pb-2">
           <div
             className={`min-h-full flex flex-col justify-center items-center ml-4 transition-all duration-700 ${
               isGameStarted && "opacity-0"
@@ -454,6 +500,7 @@ const HyperClickGame: React.FC = () => {
                   setLife={setLife}
                   isGameStarted={isGameStarted}
                   isGamePaused={isGamePaused}
+                  level={level}
                 />
               )
             )}
@@ -465,6 +512,7 @@ const HyperClickGame: React.FC = () => {
                 setLife={setLife}
                 isGameStarted={isGameStarted}
                 isGamePaused={isGamePaused}
+                level={level}
               />
             ))}
             {Array.from(
@@ -476,6 +524,7 @@ const HyperClickGame: React.FC = () => {
                 setLife={setLife}
                 isGameStarted={isGameStarted}
                 isGamePaused={isGamePaused}
+                level={level}
               />
             ))}
           </Canvas>
@@ -483,9 +532,17 @@ const HyperClickGame: React.FC = () => {
       </div>
       {score > 0 && (
         <div className="select-none pointer-events-none animate-pulse text-white absolute right-[25%] top-[20%] w-[200px] h-[100px]">
-          <div className="flex justify-center items-center h-full w-full">
+          <div className="flex justify-center items-center flex-col h-full w-full">
             <span
-              className={`text-3xl italic ${
+              className={`${levelPulse && backGroundColor(level)} ${
+                level >= 20 && backGroundColor(level)
+              }
+              } mb-6 text-3xl px-2 rounded`}
+            >
+              STAGE {level}
+            </span>
+            <span
+              className={`text-3xl ${
                 score % 5 === 0 && score !== 0 && "text-[80px] animate-bounce"
               }`}
             >
