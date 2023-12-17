@@ -89,7 +89,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     const regenerateDelay = randomNumberRange(5, 10) * 1000;
 
     if (currentTime - lastGenerateTime < regenerateDelay) return;
-    let varySpeed = 1 + 2 * (level / 20);
+    const varySpeed = 1 + 2 * (level / 20);
     ref.current.rotation.x += moveSpeed * delta * varySpeed;
     ref.current.rotation.y += moveSpeed * delta * varySpeed;
     ref.current.position.z += Math.random() * moveSpeed * delta * 6 * varySpeed;

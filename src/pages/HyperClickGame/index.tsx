@@ -51,7 +51,7 @@ const HyperClickGame: React.FC = () => {
   const [playLowComboSound] = useSound(lowCombo, { volume: 1 });
   const [playPowerUpSound] = useSound(powerUp, { volume: 0.5 });
   const [playPowerDownSound] = useSound(powerDown, { volume: 1 });
-  const [playLevelUpSound] = useSound(levelUpSound, { volume: 3 });
+  const [playLevelUpSound] = useSound(levelUpSound, { volume: 0.2 });
   const rotationSpeed = 1.5;
 
   const handleGameStart = () => {
@@ -114,6 +114,7 @@ const HyperClickGame: React.FC = () => {
       setIsGameOver(true);
       stopAbstractSound();
       setScore(0);
+      setLevel(1);
     }
   }, [life]);
 

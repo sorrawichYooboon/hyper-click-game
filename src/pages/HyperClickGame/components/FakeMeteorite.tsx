@@ -62,7 +62,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
     }
 
-    let varySpeed = 1 + 2 * (level / 20);
+    const varySpeed = 1 + 2 * (level / 20);
     ref.current.rotation.x += moveSpeed * delta * 0.3 * varySpeed;
     ref.current.rotation.y += moveSpeed * delta * 0.3 * varySpeed;
     ref.current.position.z +=
