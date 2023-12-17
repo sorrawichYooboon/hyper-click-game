@@ -280,7 +280,7 @@ const HyperClickGame: React.FC = () => {
         <title>Hyper Click Game - Flowech</title>
       </Helmet>
       <GoogleAdSense />
-      <div className="cursor"></div>
+      <div className="cursor !overflow-hidden"></div>
       <div
         className={`text-white w-full h-full flex flex-col transition-all duration-700 overflow-hidden`}
       >
