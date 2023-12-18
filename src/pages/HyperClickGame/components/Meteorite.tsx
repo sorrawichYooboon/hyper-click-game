@@ -94,6 +94,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       setScale((prevScale) => (prevScale > 0 ? prevScale - 0.05 : 0));
       if (scale === 0) {
         setMeshPosition(getRandomPosition);
+        setMeshColor(mappingNumberColor(numberToClickGoal));
+        setMeshText(numberToClickGoal);
       }
       return;
     }

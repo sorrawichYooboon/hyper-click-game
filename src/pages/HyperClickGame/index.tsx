@@ -157,6 +157,11 @@ const HyperClickGame: React.FC = () => {
       fakeMeteoriteAmount: 8,
       shieldMeteoriteAmount: 1,
     },
+    [GAME_MODE.ONE_CLICK]: {
+      meteoriteClickGoals: [1, 1, 1, 1, 1, 1],
+      fakeMeteoriteAmount: 8,
+      shieldMeteoriteAmount: 1,
+    },
   };
 
   const [fadeIn, setFadeIn] = useState<boolean>(false);
@@ -238,6 +243,7 @@ const HyperClickGame: React.FC = () => {
     { label: "Medium", color: "blue", mode: GAME_MODE.MEDIUM },
     { label: "Hard", color: "orange", mode: GAME_MODE.HARD },
     { label: "Hell", color: "pink", mode: GAME_MODE.HELL },
+    { label: "One Click", color: "warning", mode: GAME_MODE.ONE_CLICK },
   ];
 
   const backGroundColor = (level: number) => {
@@ -304,6 +310,8 @@ const HyperClickGame: React.FC = () => {
                     ? "text-orange"
                     : gameMode === GAME_MODE.HELL
                     ? "text-pink"
+                    : gameMode === GAME_MODE.ONE_CLICK
+                    ? "text-warning"
                     : "text-pink"
                 }`}
               >
@@ -347,10 +355,17 @@ const HyperClickGame: React.FC = () => {
               isGameStarted && "opacity-0"
             } ${fadeIn ? "opacity-100" : "opacity-0"}`}
           >
-            <div className="mb-5">
+            <div className="mb-5 flex flex-col items-center justify-center">
               <h1 className="font-bold text-3xl sm:text-[52px]">
-                {isGameStarted ? "Game Over" : "Hyper Click Game"}
+                {!isGameStarted && isGameOver
+                  ? "Game Over"
+                  : "Hyper Click Game"}
               </h1>
+              {!isGameStarted && isGameOver && (
+                <div className="mt-1 text-lg sm:mt-2 sm:text-xl">
+                  Last Score : {prevScore}
+                </div>
+              )}
             </div>
             <div className="flex mb-3">
               <div className="w-full flex flex-col items-center text-xs px-2">
@@ -443,6 +458,8 @@ const HyperClickGame: React.FC = () => {
                           ? "text-orange"
                           : gameMode === GAME_MODE.HELL
                           ? "text-pink"
+                          : gameMode === GAME_MODE.ONE_CLICK
+                          ? "text-warning"
                           : "text-pink"
                       }`}
                     >

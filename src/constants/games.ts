@@ -3,5 +3,6 @@ export const GAME_MODE = {
   MEDIUM: "medium",
   HARD: "hard",
   HELL: "hell",
+  ONE_CLICK: "one-click",
   DYNAMIC: "dynamic",
 };
