@@ -33,7 +33,7 @@ const HyperClickGame: React.FC = () => {
   const [level, setLevel] = useState<number>(1);
   const [levelPulse, setLevelPulse] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
-  const [gameMode, setGameMode] = useState<string>(GAME_MODE.EASY);
+  const [gameMode, setGameMode] = useState<string>(GAME_MODE.MEDIUM);
   const [abstractSoundVolumn, setAbstractSoundVolumn] = useState<number>(0.3);
   const [
     playAbstractSound,
@@ -243,7 +243,6 @@ const HyperClickGame: React.FC = () => {
     { label: "Medium", color: "blue", mode: GAME_MODE.MEDIUM },
     { label: "Hard", color: "orange", mode: GAME_MODE.HARD },
     { label: "Hell", color: "pink", mode: GAME_MODE.HELL },
-    { label: "One Click", color: "warning", mode: GAME_MODE.ONE_CLICK },
   ];
 
   const backGroundColor = (level: number) => {
@@ -467,6 +466,17 @@ const HyperClickGame: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex flex-col mt-4  h-full gap-6 sm:mb-10 sm:gap-8 lg:gap-10">
+                    <Button
+                      label={"SPECIAL One Click"}
+                      color="blue"
+                      type="outline"
+                      onClick={() => handleGameMode(GAME_MODE.ONE_CLICK)}
+                      className={`z-20 !bg-warning w-[90px] h-[35px] !text-[10px] sm:!text-sm sm:w-[200px] sm:h-[50px] ${
+                        gameMode === GAME_MODE.ONE_CLICK
+                          ? `!border-warning !bg-opacity-50 !text-white`
+                          : `!border-warning !bg-opacity-5 !text-white`
+                      }`}
+                    />
                     {gameModes.map(({ label, color, mode }, index) => (
                       <Button
                         key={index}
