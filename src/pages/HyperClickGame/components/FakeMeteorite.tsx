@@ -48,7 +48,7 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
     setIsProcessingLife(false);
   };
 
-  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
+  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 60);
 
   useFrame((_, delta) => {
     if (isGamePaused) return;

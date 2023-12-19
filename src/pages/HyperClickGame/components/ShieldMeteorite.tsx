@@ -40,8 +40,8 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
   const [lastGenerateTime, setLastGenerateTime] = useState<number>(0);
   const [isFirstLowerFive, setIsFirstLowerFive] = useState<boolean>(false);
   const [isHide, setIsHide] = useState<boolean>(false);
-  const [isProcessingLife, setIsProcessingLife] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
+  const [isProcessingLife, setIsProcessingLife] = useState<boolean>(false);
   const [playGainLifeSound] = useSound(gainLife, { volume: 2 });
   const moveSpeed = 2.5;
 
@@ -57,7 +57,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     setIsProcessingLife(false);
   };
 
-  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
+  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 60);
 
   useEffect(() => {
     if (life < 5) {

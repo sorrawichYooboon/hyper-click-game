@@ -84,7 +84,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
     }, 100);
   };
 
-  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
+  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 60);
 
   useFrame((_, delta) => {
     if (isGamePaused) return;
@@ -97,17 +97,10 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       }
       return;
     }
-    const varySpeed = 1 + 2 * (level / 20);
-    ref.current.rotation.x += moveSpeed * delta * varySpeed;
-    ref.current.rotation.y += moveSpeed * delta * varySpeed;
-    ref.current.position.z += Math.random() * moveSpeed * delta * 6 * varySpeed;
-    if (ref.current.position.z < -45) {
-      setScale(0);
-    }
 
     if (ref.current.position.z > 4 || clickCount >= numberToClickGoal) {
       setIsProcessingScore(true);
-      if (ref.current.position.z > 4) {
+      if (ref.current.position.z > 4 && !isProcessingScore) {
         setLife((prevLife: any) => prevLife - 1);
         playLostLifeSound();
       }
@@ -123,6 +116,15 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       setMeshColor(mappingNumberColor(numberToClickGoal));
       setMeshText(numberToClickGoal);
       setIsProcessingScore(false);
+      return;
+    }
+
+    const varySpeed = 1 + 2 * (level / 20);
+    ref.current.rotation.x += moveSpeed * delta * varySpeed;
+    ref.current.rotation.y += moveSpeed * delta * varySpeed;
+    ref.current.position.z += Math.random() * moveSpeed * delta * 6 * varySpeed;
+    if (ref.current.position.z < -45) {
+      setScale(0);
     }
 
     if (onHover) {
