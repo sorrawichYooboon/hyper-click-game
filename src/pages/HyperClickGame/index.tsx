@@ -55,6 +55,7 @@ const HyperClickGame: React.FC = () => {
   const [playPowerUpSound] = useSound(powerUp, { volume: 0.5 });
   const [playPowerDownSound] = useSound(powerDown, { volume: 1 });
   const [playLevelUpSound] = useSound(levelUpSound, { volume: 0.2 });
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   const rotationSpeed = 1.5;
 
   const handleGameStart = () => {
@@ -362,7 +363,7 @@ const HyperClickGame: React.FC = () => {
                 onClick={() => debouncedHandlePauseGame()}
               />
               <div
-                className={`text-aqua opacity-0 transition-all duration-700 z-20 select-none pointer-events-none text-xs mt-1 sm:text-sm ${
+                className={`text-aqua opacity-0 transition-all duration-700 z-20 select-none pointer-events-none text-xs mt-1 sm:text-sm h-10 ${
                   isGameStarted ? "!opacity-100" : "!opacity-0"
                 }`}
               >
@@ -377,7 +378,7 @@ const HyperClickGame: React.FC = () => {
                 className={`z-20 w-[80px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 !ml-2 sm:!text-sm sm:w-[150px] sm:h-[50px]`}
                 onClick={() => handleMuteSound()}
               />
-              {!isFirstTimeLanding && (
+              {!isFirstTimeLanding && !isIOS && (
                 <MuiButton
                   variant="outlined"
                   className="z-20 w-[80px] h-[35px] !text-[6px] !text-white !bg-blue !border !border-blue !bg-opacity-30 sm:!text-xs sm:w-[150px] sm:h-[50px] !ml-2"
@@ -428,7 +429,7 @@ const HyperClickGame: React.FC = () => {
                   className="z-20 w-[230px] h-[40px] !text-xs !text-white !bg-blue !border !border-blue !bg-opacity-30 sm:!text-sm sm:w-[230px] sm:h-[50px] !mt-4 animate-bounce"
                   onClick={() => handleFirstTimeLanding()}
                 >
-                  FULL SCREEN TO START
+                  SELECT MODE
                 </MuiButton>
               </>
             ) : (
