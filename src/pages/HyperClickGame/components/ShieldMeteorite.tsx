@@ -57,7 +57,7 @@ const ShieldMeteorite: React.FC<ShieldMeteoriteProps> = ({
     setIsProcessingLife(false);
   };
 
-  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 60);
+  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 40);
 
   useEffect(() => {
     if (life < 5) {

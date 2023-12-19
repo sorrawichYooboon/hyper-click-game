@@ -125,7 +125,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
     }
   }, [isProcessingLostLife]);
 
-  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 60);
+  const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 40);
 
   useFrame((_, delta) => {
     if (isGamePaused) return;
