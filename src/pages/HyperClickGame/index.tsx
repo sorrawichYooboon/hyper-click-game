@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import "src/pages/HyperClickGame/index.css";
 import { Helmet } from "react-helmet";
 import { FaShieldHeart } from "react-icons/fa6";
-import Button from "src/components/Button";
+import { Button as CustomButton } from "src/components/Button";
+import { Button as MuiButton } from "@mui/material";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { debounce } from "src/utils/time";
 import Stars from "src/pages/HyperClickGame/components/Stars";
@@ -35,6 +36,8 @@ const HyperClickGame: React.FC = () => {
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [gameMode, setGameMode] = useState<string>(GAME_MODE.MEDIUM);
   const [abstractSoundVolumn, setAbstractSoundVolumn] = useState<number>(0.3);
+  const [isFirstTimeLanding, setIsFirstTimeLanding] = useState<boolean>(true);
+  const [isAppearMenu, setIsAppearMenu] = useState<boolean>(false);
   const [
     playAbstractSound,
     { stop: stopAbstractSound, pause: pauseAbstractSound },
@@ -196,6 +199,29 @@ const HyperClickGame: React.FC = () => {
     );
   };
 
+  const handleToggleFullScreen = () => {
+    const elem = document.documentElement;
+    const isInFullScreen = document.fullscreenElement !== null;
+    if (elem.requestFullscreen) {
+      if (!isInFullScreen) {
+        elem.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  };
+
+  const handleFirstTimeLanding = () => {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    }
+    setIsFirstTimeLanding(false);
+    setTimeout(() => {
+      setIsAppearMenu(true);
+    }, 1000);
+  };
+
   const LostLifeBox = () => {
     const lostScoreMeshRef = useRef<THREE.Mesh>(null!);
 
@@ -290,7 +316,11 @@ const HyperClickGame: React.FC = () => {
         className={`text-white w-full h-full flex flex-col transition-all duration-700 overflow-hidden`}
       >
         <div className="w-full pt-2 z-30">
-          <div className="flex w-full justify-center">
+          <div
+            className={`flex w-full justify-center mb-[-8px] ${
+              isAppearMenu ? "opacity-100" : "opacity-0"
+            } transition-all duration-700`}
+          >
             <div
               className={`select-none pointer-events-none !transition-all !duration-700 mr-4 mt-1 text-white text-xl sm:text-2xl ${
                 isGameStarted
@@ -318,11 +348,11 @@ const HyperClickGame: React.FC = () => {
               </span>
             </div>
             <div className="flex flex-col justify-center items-center">
-              <Button
+              <CustomButton
                 label={isGamePaused ? "Resume" : "Pause"}
                 color="aqua"
                 type="outline"
-                className={`!opacity-0 !transition-all !duration-700 !z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 sm:!text-sm sm:w-[200px] sm:h-[50px] ${
+                className={`!opacity-0 !transition-all !duration-700 !z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 sm:!text-sm sm:w-[150px] sm:h-[50px] ${
                   isGameStarted
                     ? "!opacity-100"
                     : "!opacity-0 !pointer-events-none"
@@ -337,15 +367,24 @@ const HyperClickGame: React.FC = () => {
                 (Left Ctrl)
               </div>
             </div>
-            <Button
-              label={abstractSoundVolumn === 0 ? "Unmute" : "Mute"}
-              color="green"
-              type="outline"
-              className={`z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 !ml-2 sm:!text-sm sm:w-[200px] sm:h-[50px] ${
-                isGameStarted ? "" : "!fixed text-center"
-              }`}
-              onClick={() => handleMuteSound()}
-            />
+            <div className={`${isGameStarted ? "" : "!fixed text-center"}`}>
+              <CustomButton
+                label={abstractSoundVolumn === 0 ? "Unmute" : "Mute"}
+                color="green"
+                type="outline"
+                className={`z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 !ml-2 sm:!text-sm sm:w-[150px] sm:h-[50px]`}
+                onClick={() => handleMuteSound()}
+              />
+              {!isFirstTimeLanding && (
+                <MuiButton
+                  variant="outlined"
+                  className="z-20 w-[90px] h-[35px] !text-[8px] !text-white !bg-blue !border !border-blue !bg-opacity-30 sm:!text-xs sm:w-[150px] sm:h-[50px] !ml-2"
+                  onClick={() => handleToggleFullScreen()}
+                >
+                  TOGGLE FULL SCREEN
+                </MuiButton>
+              )}
+            </div>
           </div>
         </div>
         <div className="overflow-hidden h-full w-full z-10 pb-2">
@@ -354,7 +393,11 @@ const HyperClickGame: React.FC = () => {
               isGameStarted && "opacity-0"
             } ${fadeIn ? "opacity-100" : "opacity-0"}`}
           >
-            <div className="mb-5 flex flex-col items-center justify-center">
+            <div
+              className={`mb-5 flex flex-col items-center justify-center ${
+                isAppearMenu ? "opacity-100" : "opacity-0"
+              } transition-all duration-700`}
+            >
               <h1 className="font-bold text-3xl sm:text-[52px]">
                 {!isGameStarted && isGameOver
                   ? "Game Over"
@@ -366,142 +409,171 @@ const HyperClickGame: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="flex mb-3">
-              <div className="w-full flex flex-col items-center text-xs px-2">
-                <div className="text-sm font-bold sm:text-xl">Tutorial</div>
-                <div className="mt-4 w-full lg:h-[calc(100%-112px)]">
-                  <div>
-                    <span className="text-xs sm:text-sm">
-                      1. Click the score box to{" "}
-                      <span className="text-green">score points</span> based on
-                      the displayed number and click count.
-                    </span>
-                    <br />
-                    <span className="text-xs sm:text-sm">
-                      2. Click the lost life box to{" "}
-                      <span className="text-orange">lose a life.</span> You have
-                      5 lives.
-                    </span>
-                    <br />
-                    <span className="text-xs sm:text-sm">
-                      3. Click the <span className="text-blue">gain life</span>{" "}
-                      box to gain 1 life.
-                    </span>
+            {isFirstTimeLanding && (
+              <div className={`mb-5 flex flex-col items-center justify-center`}>
+                <h1 className="font-bold text-3xl sm:text-[52px]">
+                  {!isGameStarted && isGameOver
+                    ? "Game Over"
+                    : "Hyper Click Game"}
+                </h1>
+              </div>
+            )}
+
+            {isFirstTimeLanding ? (
+              <>
+                <MuiButton
+                  variant="outlined"
+                  className="z-20 w-[230px] h-[40px] !text-xs !text-white !bg-blue !border !border-blue !bg-opacity-30 sm:!text-sm sm:w-[230px] sm:h-[50px] !mt-4 animate-bounce"
+                  onClick={() => handleFirstTimeLanding()}
+                >
+                  FULL SCREEN TO START
+                </MuiButton>
+              </>
+            ) : (
+              <div
+                className={`flex flex-col items-center ${
+                  isAppearMenu ? "opacity-100" : "opacity-0"
+                } transition-all duration-700`}
+              >
+                <div className="flex mb-3">
+                  <div className="w-full flex flex-col items-center text-xs px-2">
+                    <div className="text-sm font-bold sm:text-xl">Tutorial</div>
+                    <div className="mt-4 w-full lg:h-[calc(100%-112px)]">
+                      <div>
+                        <span className="text-xs sm:text-sm">
+                          1. Click the score box to{" "}
+                          <span className="text-green">score points</span> based
+                          on the displayed number and click count.
+                        </span>
+                        <br />
+                        <span className="text-xs sm:text-sm">
+                          2. Click the lost life box to{" "}
+                          <span className="text-orange">lose a life.</span> You
+                          have 5 lives.
+                        </span>
+                        <br />
+                        <span className="text-xs sm:text-sm">
+                          3. Click the{" "}
+                          <span className="text-blue">gain life</span> box to
+                          gain 1 life.
+                        </span>
+                      </div>
+                      <div className="flex flex-col h-full w-full mt-2 text-xs">
+                        <div className="flex lg:w-full lg:h-full">
+                          <div className="w-[100px] h-[50px] sm:w-[200px] sm:h-[100px]">
+                            <Canvas>
+                              <rectAreaLight
+                                width={10}
+                                height={10}
+                                position={[0, 0, 5]}
+                                castShadow
+                              />
+                              <ambientLight intensity={0.5} />
+                              <ScoreBox />
+                            </Canvas>
+                          </div>
+                          <div className="flex items-center sm:text-sm lg:w-full lg:h-full">
+                            Score Box
+                          </div>
+                        </div>
+                        <div className="flex lg:w-full lg:h-full">
+                          <div className="w-[100px] h-[50px] sm:w-[200px] sm:h-[100px]">
+                            <Canvas>
+                              <rectAreaLight
+                                width={10}
+                                height={10}
+                                position={[0, 0, 5]}
+                                castShadow
+                              />
+                              <ambientLight intensity={0.5} />
+                              <LostLifeBox />
+                            </Canvas>
+                          </div>
+                          <div className="flex items-center mt-[-12px] sm:text-sm lg:w-full lg:h-full">
+                            Lost Life Box
+                          </div>
+                        </div>
+                        <div className="flex lg:w-full lg:h-full">
+                          <div className="w-[100px] h-[50px] sm:w-[200px] sm:h-[100px]">
+                            <Canvas>
+                              <rectAreaLight
+                                width={10}
+                                height={10}
+                                position={[0, 0, 5]}
+                                castShadow
+                              />
+                              <ambientLight intensity={0.5} />
+                              <GainLifeBox />
+                            </Canvas>
+                          </div>
+                          <div className="flex items-center mt-[-12px] sm:text-sm lg:w-full lg:h-full">
+                            Gain Life Box
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col h-full w-full mt-2 text-xs">
-                    <div className="flex lg:w-full lg:h-full">
-                      <div className="w-[100px] h-[50px] sm:w-[200px] sm:h-[100px]">
-                        <Canvas>
-                          <rectAreaLight
-                            width={10}
-                            height={10}
-                            position={[0, 0, 5]}
-                            castShadow
+                  <div className="w-full flex justify-center border-l border-[#307ADF]/40 text-xs">
+                    <div className="flex flex-col items-center">
+                      <div className="flex justify-center text-sm font-bold sm:text-xl">
+                        Select Mode :{" "}
+                        <span
+                          className={`${
+                            gameMode === GAME_MODE.EASY
+                              ? "text-green"
+                              : gameMode === GAME_MODE.MEDIUM
+                              ? "text-blue"
+                              : gameMode === GAME_MODE.HARD
+                              ? "text-orange"
+                              : gameMode === GAME_MODE.HELL
+                              ? "text-pink"
+                              : gameMode === GAME_MODE.ONE_CLICK
+                              ? "text-warning"
+                              : "text-pink"
+                          }`}
+                        >
+                          &nbsp;{gameMode}
+                        </span>
+                      </div>
+                      <div className="flex flex-col mt-4  h-full gap-6 sm:mb-10 sm:gap-8 lg:gap-10">
+                        <CustomButton
+                          label={"SPECIAL One Click"}
+                          color="blue"
+                          type="outline"
+                          onClick={() => handleGameMode(GAME_MODE.ONE_CLICK)}
+                          className={`z-20 !bg-warning w-[90px] h-[35px] !text-[10px] sm:!text-sm sm:w-[200px] sm:h-[50px] ${
+                            gameMode === GAME_MODE.ONE_CLICK
+                              ? `!border-warning !bg-opacity-50 !text-white`
+                              : `!border-warning !bg-opacity-5 !text-white`
+                          }`}
+                        />
+                        {gameModes.map(({ label, color, mode }, index) => (
+                          <CustomButton
+                            key={index}
+                            label={label}
+                            color="blue"
+                            type="outline"
+                            onClick={() => handleGameMode(mode)}
+                            className={`z-20 !bg-${color} w-[90px] h-[35px] !text-xs sm:!text-sm sm:w-[200px] sm:h-[50px] ${
+                              gameMode === mode
+                                ? `!border-${color} !bg-opacity-50 !text-white`
+                                : `!border-${color} !bg-opacity-5 !text-white`
+                            }`}
                           />
-                          <ambientLight intensity={0.5} />
-                          <ScoreBox />
-                        </Canvas>
-                      </div>
-                      <div className="flex items-center sm:text-sm lg:w-full lg:h-full">
-                        Score Box
-                      </div>
-                    </div>
-                    <div className="flex lg:w-full lg:h-full">
-                      <div className="w-[100px] h-[50px] sm:w-[200px] sm:h-[100px]">
-                        <Canvas>
-                          <rectAreaLight
-                            width={10}
-                            height={10}
-                            position={[0, 0, 5]}
-                            castShadow
-                          />
-                          <ambientLight intensity={0.5} />
-                          <LostLifeBox />
-                        </Canvas>
-                      </div>
-                      <div className="flex items-center mt-[-12px] sm:text-sm lg:w-full lg:h-full">
-                        Lost Life Box
-                      </div>
-                    </div>
-                    <div className="flex lg:w-full lg:h-full">
-                      <div className="w-[100px] h-[50px] sm:w-[200px] sm:h-[100px]">
-                        <Canvas>
-                          <rectAreaLight
-                            width={10}
-                            height={10}
-                            position={[0, 0, 5]}
-                            castShadow
-                          />
-                          <ambientLight intensity={0.5} />
-                          <GainLifeBox />
-                        </Canvas>
-                      </div>
-                      <div className="flex items-center mt-[-12px] sm:text-sm lg:w-full lg:h-full">
-                        Gain Life Box
+                        ))}
                       </div>
                     </div>
                   </div>
                 </div>
+                <CustomButton
+                  label={isGameOver ? "Play Again" : "Start"}
+                  color="blue"
+                  type="outline"
+                  className="z-20 w-[100px] h-[40px] !text-xs !text-white !bg-blue !bg-opacity-5 sm:!text-sm sm:w-[200px] sm:h-[50px]"
+                  onClick={() => handleGameStart()}
+                />
               </div>
-              <div className="w-full flex justify-center border-l border-[#307ADF]/40 text-xs">
-                <div className="flex flex-col items-center">
-                  <div className="flex justify-center text-sm font-bold sm:text-xl">
-                    Select Mode :{" "}
-                    <span
-                      className={`${
-                        gameMode === GAME_MODE.EASY
-                          ? "text-green"
-                          : gameMode === GAME_MODE.MEDIUM
-                          ? "text-blue"
-                          : gameMode === GAME_MODE.HARD
-                          ? "text-orange"
-                          : gameMode === GAME_MODE.HELL
-                          ? "text-pink"
-                          : gameMode === GAME_MODE.ONE_CLICK
-                          ? "text-warning"
-                          : "text-pink"
-                      }`}
-                    >
-                      &nbsp;{gameMode}
-                    </span>
-                  </div>
-                  <div className="flex flex-col mt-4  h-full gap-6 sm:mb-10 sm:gap-8 lg:gap-10">
-                    <Button
-                      label={"SPECIAL One Click"}
-                      color="blue"
-                      type="outline"
-                      onClick={() => handleGameMode(GAME_MODE.ONE_CLICK)}
-                      className={`z-20 !bg-warning w-[90px] h-[35px] !text-[10px] sm:!text-sm sm:w-[200px] sm:h-[50px] ${
-                        gameMode === GAME_MODE.ONE_CLICK
-                          ? `!border-warning !bg-opacity-50 !text-white`
-                          : `!border-warning !bg-opacity-5 !text-white`
-                      }`}
-                    />
-                    {gameModes.map(({ label, color, mode }, index) => (
-                      <Button
-                        key={index}
-                        label={label}
-                        color="blue"
-                        type="outline"
-                        onClick={() => handleGameMode(mode)}
-                        className={`z-20 !bg-${color} w-[90px] h-[35px] !text-xs sm:!text-sm sm:w-[200px] sm:h-[50px] ${
-                          gameMode === mode
-                            ? `!border-${color} !bg-opacity-50 !text-white`
-                            : `!border-${color} !bg-opacity-5 !text-white`
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <Button
-              label={isGameOver ? "Play Again" : "Start"}
-              color="blue"
-              type="outline"
-              className="z-20 w-[100px] h-[40px] !text-xs !text-white !bg-blue !bg-opacity-5 sm:!text-sm sm:w-[200px] sm:h-[50px]"
-              onClick={() => handleGameStart()}
-            />
+            )}
           </div>
         </div>
         <div
