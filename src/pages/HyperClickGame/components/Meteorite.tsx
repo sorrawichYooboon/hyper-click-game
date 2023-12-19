@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { debounce } from "src/utils/time";
 import { randomPositionOrNegativeNumber } from "src/utils/calculations";
@@ -60,6 +60,9 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const [mestText, setMeshText] = useState<number>(numberToClickGoal);
   const [clickCount, setClickCount] = useState<number>(0);
   const [isProcessingScore, setIsProcessingScore] = useState<boolean>(false);
+  const [isProcessingLife, setIsProcessingLife] = useState<boolean>(false);
+  const [isProcessingLostLife, setIsProcessingLostLife] =
+    useState<boolean>(false);
   const [onHover, setOnHover] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
   const [playMeteoriteClickSound] = useSound(meteoriteClickSound, {
@@ -70,7 +73,13 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const moveSpeed = 2.5;
 
   const handleMeteoriteClick = () => {
-    if (isGamePaused || isProcessingScore) return;
+    if (
+      isGamePaused ||
+      isProcessingScore ||
+      isProcessingLife ||
+      isProcessingLostLife
+    )
+      return;
     setClickCount((prevClick) => prevClick + 1);
     if (clickCount < numberToClickGoal) {
       playMeteoriteClickSound();
@@ -83,6 +92,38 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       setMeshColorText("#F1EFF4");
     }, 100);
   };
+
+  useEffect(() => {
+    if (clickCount >= numberToClickGoal && !isProcessingScore) {
+      setIsProcessingScore(true);
+      setScore((prevScore: any) => prevScore + numberToClickGoal);
+      playGetScoreSound();
+
+      setScale(0);
+      setClickCount(0);
+      setMeshPosition(getRandomPosition);
+      setMeshColor(mappingNumberColor(numberToClickGoal));
+      setMeshText(numberToClickGoal);
+      setIsProcessingScore(false);
+      return;
+    }
+  }, [clickCount]);
+
+  useEffect(() => {
+    if (isProcessingLostLife && !isProcessingLife) {
+      setIsProcessingLife(true);
+      setLife((prevLife: any) => prevLife - 1);
+      playLostLifeSound();
+
+      setScale(0);
+      setClickCount(0);
+      setMeshPosition(getRandomPosition);
+      setMeshColor(mappingNumberColor(numberToClickGoal));
+      setMeshText(numberToClickGoal);
+      setIsProcessingLife(false);
+      setIsProcessingLostLife(false);
+    }
+  }, [isProcessingLostLife]);
 
   const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 60);
 
@@ -98,25 +139,8 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       return;
     }
 
-    if (ref.current.position.z > 4 || clickCount >= numberToClickGoal) {
-      setIsProcessingScore(true);
-      if (ref.current.position.z > 4 && !isProcessingScore) {
-        setLife((prevLife: any) => prevLife - 1);
-        playLostLifeSound();
-      }
-
-      if (clickCount >= numberToClickGoal && !isProcessingScore) {
-        setScore((prevScore: any) => prevScore + numberToClickGoal);
-        playGetScoreSound();
-      }
-
-      setScale(0);
-      setClickCount(0);
-      setMeshPosition(getRandomPosition);
-      setMeshColor(mappingNumberColor(numberToClickGoal));
-      setMeshText(numberToClickGoal);
-      setIsProcessingScore(false);
-      return;
+    if (ref.current.position.z > 4 && !isProcessingLife) {
+      setIsProcessingLostLife(true);
     }
 
     const varySpeed = 1 + 2 * (level / 20);

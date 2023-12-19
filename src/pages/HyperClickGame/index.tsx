@@ -293,20 +293,22 @@ const HyperClickGame: React.FC = () => {
   const cursor = document.querySelector(".cursor");
 
   // Attaching Event listner to follow cursor
-  document.addEventListener("mousemove", (e) => {
-    cursor!.setAttribute(
-      "style",
-      "top: " + (e.pageY - 25) + "px; left:" + (e.pageX - 25) + "px;"
-    );
-  });
+  if (cursor) {
+    document.addEventListener("mousemove", (e) => {
+      cursor!.setAttribute(
+        "style",
+        "top: " + (e.pageY - 25) + "px; left:" + (e.pageX - 25) + "px;"
+      );
+    });
 
-  // ON CLICK ADD/REMOVE CLASS ".expend"
-  document.addEventListener("click", () => {
-    cursor!.classList.add("expend");
-    setTimeout(() => {
-      cursor!.classList.remove("expend");
-    }, 500);
-  });
+    // ON CLICK ADD/REMOVE CLASS ".expend"
+    document.addEventListener("click", () => {
+      cursor!.classList.add("expend");
+      setTimeout(() => {
+        cursor!.classList.remove("expend");
+      }, 500);
+    });
+  }
 
   return (
     <div className="h-screen w-screen bg-black">
