@@ -71,7 +71,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const moveSpeed = 2.5;
 
   const handleMeteoriteClick = () => {
-    if (isGamePaused) return;
+    if (isGamePaused || clickCount >= numberToClickGoal) return;
     setClickCount((prevClick) => prevClick + 1);
     if (clickCount < numberToClickGoal) {
       playMeteoriteClickSound();
