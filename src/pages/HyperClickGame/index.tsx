@@ -200,6 +200,7 @@ const HyperClickGame: React.FC = () => {
   };
 
   const handleToggleFullScreen = () => {
+    playClickSound();
     const elem = document.documentElement;
     const isInFullScreen = document.fullscreenElement !== null;
     if (elem.requestFullscreen) {
@@ -212,6 +213,7 @@ const HyperClickGame: React.FC = () => {
   };
 
   const handleFirstTimeLanding = () => {
+    playClickSound();
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
@@ -322,7 +324,7 @@ const HyperClickGame: React.FC = () => {
             } transition-all duration-700`}
           >
             <div
-              className={`select-none pointer-events-none !transition-all !duration-700 mr-4 mt-1 text-white text-xl sm:text-2xl ${
+              className={`select-none pointer-events-none !transition-all !duration-700 mt-1 text-white text-xs mr-2 sm:mr-4 sm:text-2xl ${
                 isGameStarted
                   ? "!opacity-100"
                   : "!opacity-0 !pointer-events-none"
@@ -352,7 +354,7 @@ const HyperClickGame: React.FC = () => {
                 label={isGamePaused ? "Resume" : "Pause"}
                 color="aqua"
                 type="outline"
-                className={`!opacity-0 !transition-all !duration-700 !z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 sm:!text-sm sm:w-[150px] sm:h-[50px] ${
+                className={`!opacity-0 !transition-all !duration-700 !z-20 w-[80px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 sm:!text-sm sm:w-[150px] sm:h-[50px] ${
                   isGameStarted
                     ? "!opacity-100"
                     : "!opacity-0 !pointer-events-none"
@@ -372,13 +374,13 @@ const HyperClickGame: React.FC = () => {
                 label={abstractSoundVolumn === 0 ? "Unmute" : "Mute"}
                 color="green"
                 type="outline"
-                className={`z-20 w-[90px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 !ml-2 sm:!text-sm sm:w-[150px] sm:h-[50px]`}
+                className={`z-20 w-[80px] h-[35px] !text-xs !text-white !bg-blue !bg-opacity-5 !ml-2 sm:!text-sm sm:w-[150px] sm:h-[50px]`}
                 onClick={() => handleMuteSound()}
               />
               {!isFirstTimeLanding && (
                 <MuiButton
                   variant="outlined"
-                  className="z-20 w-[90px] h-[35px] !text-[8px] !text-white !bg-blue !border !border-blue !bg-opacity-30 sm:!text-xs sm:w-[150px] sm:h-[50px] !ml-2"
+                  className="z-20 w-[80px] h-[35px] !text-[6px] !text-white !bg-blue !border !border-blue !bg-opacity-30 sm:!text-xs sm:w-[150px] sm:h-[50px] !ml-2"
                   onClick={() => handleToggleFullScreen()}
                 >
                   TOGGLE FULL SCREEN
