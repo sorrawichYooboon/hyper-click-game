@@ -72,7 +72,10 @@ const Meteorite: React.FC<MeteoriteProps> = ({
 
   const handleMeteoriteClick = () => {
     if (isGamePaused) return;
-
+    setClickCount((prevClick) => prevClick + 1);
+    if (clickCount < numberToClickGoal) {
+      playMeteoriteClickSound();
+    }
     setMeshColor("#F1EFF4");
     setMeshColorText("#000000");
     setScale(3.5);
@@ -80,10 +83,6 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       setMeshColor(mappingNumberColor(numberToClickGoal));
       setMeshColorText("#F1EFF4");
     }, 100);
-    setClickCount((prevClick) => prevClick + 1);
-    if (clickCount < numberToClickGoal) {
-      playMeteoriteClickSound();
-    }
   };
 
   const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
