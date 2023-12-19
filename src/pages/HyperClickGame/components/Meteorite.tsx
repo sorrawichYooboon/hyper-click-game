@@ -59,8 +59,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const [mestColorText, setMeshColorText] = useState<string>("#F1EFF4");
   const [mestText, setMeshText] = useState<number>(numberToClickGoal);
   const [clickCount, setClickCount] = useState<number>(0);
-  const [isAlreadyAddedScore, setIsAlreadyAddedScore] =
-    useState<boolean>(false);
+  const [isProcessingScore, setIsProcessingScore] = useState<boolean>(false);
   const [onHover, setOnHover] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
   const [playMeteoriteClickSound] = useSound(meteoriteClickSound, {
@@ -71,7 +70,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
   const moveSpeed = 2.5;
 
   const handleMeteoriteClick = () => {
-    if (isGamePaused || clickCount >= numberToClickGoal) return;
+    if (isGamePaused || isProcessingScore) return;
     setClickCount((prevClick) => prevClick + 1);
     if (clickCount < numberToClickGoal) {
       playMeteoriteClickSound();
@@ -107,16 +106,15 @@ const Meteorite: React.FC<MeteoriteProps> = ({
     }
 
     if (ref.current.position.z > 4 || clickCount >= numberToClickGoal) {
+      setIsProcessingScore(true);
       if (ref.current.position.z > 4) {
         setLife((prevLife: any) => prevLife - 1);
         playLostLifeSound();
       }
 
-      if (clickCount >= numberToClickGoal && !isAlreadyAddedScore) {
-        setIsAlreadyAddedScore(true);
+      if (clickCount >= numberToClickGoal && !isProcessingScore) {
         setScore((prevScore: any) => prevScore + numberToClickGoal);
         playGetScoreSound();
-        setIsAlreadyAddedScore(false);
       }
 
       setScale(0);
@@ -124,6 +122,7 @@ const Meteorite: React.FC<MeteoriteProps> = ({
       setMeshPosition(getRandomPosition);
       setMeshColor(mappingNumberColor(numberToClickGoal));
       setMeshText(numberToClickGoal);
+      setIsProcessingScore(false);
     }
 
     if (onHover) {

@@ -34,15 +34,18 @@ const FakeMeteorite: React.FC<FakeMeteoriteProps> = ({
   const [onHover, setOnHover] = useState<boolean>(false);
   const [isHide, setIsHide] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(0);
+  const [isProcessingLife, setIsProcessingLife] = useState<boolean>(false);
   const [playLostLifeSound] = useSound(lostLife, { volume: 0.5 });
   const moveSpeed = 10;
 
   const handleMeteoriteClick = () => {
-    if (isGamePaused) return;
+    if (isGamePaused || isProcessingLife) return;
+    setIsProcessingLife(true);
     setLife((prevLife: any) => prevLife - 1);
     playLostLifeSound();
     setScale(0);
     setIsHide(true);
+    setIsProcessingLife(false);
   };
 
   const debouncedHandleMeteoriteClick = debounce(handleMeteoriteClick, 25);
