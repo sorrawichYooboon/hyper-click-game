@@ -317,9 +317,9 @@ const HyperClickGame: React.FC = () => {
       <div
         className={`text-white w-full h-full flex flex-col transition-all duration-700 overflow-hidden`}
       >
-        <div className="w-full pt-2 z-30">
+        <div className="w-full pt-2 z-30 overflow-hidden">
           <div
-            className={`flex w-full justify-center mb-[-8px] ${
+            className={`flex w-full justify-center mb-[-8px] overflow-hidden ${
               isAppearMenu ? "opacity-100" : "opacity-0"
             } transition-all duration-700`}
           >
